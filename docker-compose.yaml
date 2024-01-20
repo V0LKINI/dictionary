@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: dictionary_nginx
+    volumes:
+      - ./:/var/www/
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    networks:
+      - app-network
+  app:
+    build:
+      args:
+        user: worker
+        uid: 1000
+      context: .
+      dockerfile: docker/app/Dockerfile
+    container_name: dictionary
+    working_dir: /var/www/
+    ports:
+      - 5173:5173
+    volumes:
+      - ./:/var/www/
+    user: 1000:1000
+    depends_on:
+      - db
+    networks:
+      - app-network
+  db:
+    image: mysql:8.0.36
+    restart: always
+    volumes:
+      - ./cache/mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: dictionary
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: 'dev'
+      MYSQL_PASSWORD: 'dev'
+    container_name: dictionary_db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

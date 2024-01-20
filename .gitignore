@@ -3,8 +3,10 @@
 /public/build
 /public/hot
 /public/storage
+/public/robots.txt
 /storage/*.key
 /vendor
+/cache
 .env
 .env.backup
 .env.production
