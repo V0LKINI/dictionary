@@ -1,9 +1,23 @@
-import './bootstrap';
-
+import setHeaderAuth from "./utilits/setHeaderAuth.js";
+import {createPinia} from 'pinia'
+import axios from 'axios';
 import { createApp } from 'vue';
 import router from './router.js'
 import App from "./App.vue";
 
+window.axios = axios;
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL_API;
+
+if (localStorage.getItem('token')) {
+    setHeaderAuth(localStorage.getItem('token'))
+} else {
+    setHeaderAuth(false);
+}
+
 createApp(App)
+    .use(createPinia())
     .use(router)
     .mount("#app");
