@@ -44,7 +44,19 @@ services:
     container_name: dictionary_db
     networks:
       - app-network
-
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    ports:
+      - 8000:80
+    container_name: dictionary_pma
+    depends_on:
+      - db
+    networks:
+      - app-network
 networks:
   app-network:
     driver: bridge

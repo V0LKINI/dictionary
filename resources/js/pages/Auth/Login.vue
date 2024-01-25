@@ -13,7 +13,7 @@
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                 <form>
-                    <input-text v-model="credentials" label="Email or phone"/>
+                    <input-text v-model="credentials" label="Email"/>
                     <input-text v-model="password" label="Password" type="password"/>
 
                     <div class="mt-6 flex items-center justify-between">

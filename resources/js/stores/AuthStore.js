@@ -29,7 +29,35 @@ export const useAuthStore = defineStore("authStore", () => {
                 localStorage.setItem('authUser', JSON.stringify(response.data.user));
                 localStorage.setItem('token', response.data.token);
 
-                router.push({name: 'Dashboard'})
+                router.push({name: 'Dictionary'})
+            } else {
+                error.value = response.error.message
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
+    };
+
+    const register = async (name, credentials, password, passwordConfirm) => {
+        error.value = null;
+
+        await axios.post('/api/register', {
+            name: name,
+            credentials: credentials,
+            password: password,
+            password_confirm: passwordConfirm
+        }).then((r) => {
+            let response = r.data;
+
+            if (response.success) {
+                authUser.value = response.data.user;
+
+                setHeaderAuth(response.data.token)
+
+                localStorage.setItem('authUser', JSON.stringify(response.data.user));
+                localStorage.setItem('token', response.data.token);
+
+                router.push({name: 'Dictionary'})
             } else {
                 error.value = response.error.message
             }
@@ -58,6 +86,7 @@ export const useAuthStore = defineStore("authStore", () => {
         authUser,
         error,
         login,
+        register,
         logout,
         getProfile,
         clearAuthUser

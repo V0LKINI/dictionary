@@ -13,10 +13,11 @@
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                 <form>
-                    <input-text label="Email or phone"/>
-                    <input-text label="Password" type="password"/>
-                    <input-text label="Confirm password" type="password"/>
-                    <button-default text="Sign up"/>
+                    <input-text v-model="name" label="Name"/>
+                    <input-text v-model="credentials" label="Email"/>
+                    <input-text v-model="password" label="Password" type="password"/>
+                    <input-text v-model="passwordConfirm" label="Confirm password" type="password"/>
+                    <button-default @click="register" text="Sign up"/>
                 </form>
             </div>
         </div>
@@ -27,4 +28,16 @@
 import ButtonDefault from "../../components/ButtonDefault.vue";
 import LinkRouter from "../../components/LinkRouter.vue";
 import InputText from "../../components/InputText.vue";
+import {useAuthStore} from "../../stores/AuthStore.js";
+import {ref} from "vue";
+
+const authStore = useAuthStore();
+const name = ref('');
+const credentials = ref('');
+const password = ref('');
+const passwordConfirm = ref('');
+
+const register = () => {
+  authStore.register(name.value, credentials.value, password.value, passwordConfirm.value)
+}
 </script>
