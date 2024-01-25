@@ -6,18 +6,17 @@ import setHeaderAuth from "../utilits/setHeaderAuth.js";
 
 export const useAuthStore = defineStore("authStore", () => {
     const authUser = ref(JSON.parse(localStorage.getItem('authUser')));
-
     const error = ref(null);
 
     const getProfile = async () => {
         return await axios.get('/user/profile');
     };
 
-    const login = async (email, password) => {
+    const login = async (credentials, password) => {
         error.value = null;
 
-        await axios.post('/login', {
-            email: email,
+        await axios.post('/api/login', {
+            credentials: credentials,
             password: password
         }).then((r) => {
             let response = r.data;

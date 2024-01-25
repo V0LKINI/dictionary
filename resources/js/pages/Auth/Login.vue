@@ -13,8 +13,8 @@
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                 <form>
-                    <input-text v-model="email" label="Email or phone" required/>
-                    <input-text v-model="password" label="Password" type="password" required/>
+                    <input-text v-model="credentials" label="Email or phone"/>
+                    <input-text v-model="password" label="Password" type="password"/>
 
                     <div class="mt-6 flex items-center justify-between">
                         <input-checkbox label="Remember me"/>
@@ -41,11 +41,11 @@ import InputText from "../../components/InputText.vue";
 import InputCheckbox from "../../components/InputCheckbox.vue";
 
 const authStore = useAuthStore();
-const email = ref('');
+const credentials = ref('');
 const password = ref('');
 
 const login = () => {
-    authStore.login(email.value, password.value)
+    authStore.login(credentials.value, password.value)
 }
 
 </script>
