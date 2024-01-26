@@ -1,9 +1,39 @@
 <template>
-    <div class="min-h-screen bg-gray-50 flex flex-col py-12 sm:px-6 lg:px-8 px-6">
-        <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-start gap-x-2 mb-4">
-            <input-dropdown/>
-            <input-search label="Search" placeholder="Search for words"/>
-            <button-default text="Add new translation"/>
+    <div class="min-h-screen bg-gray-50 flex flex-col py-6 sm:px-6 lg:px-8 px-6">
+        <div class="flex flex-column flex-col-reverse sm:flex-row  flex-wrap  justify-between">
+            <div class="flex flex-column sm:flex-row flex-wrap justify-start space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
+              <input-dropdown/>
+              <input-search label="Search" placeholder="Search for words"/>
+              <button-default text="Add new translation"/>
+            </div>
+            <div class="flex flex-wrap justify-start sm:justify-end space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
+              <div @click="toggleProfile" class="flex items-center gap-4">
+                <img type="button"
+                     data-dropdown-placement="bottom-start" class="w-10 h-10 rounded-full cursor-pointer"
+                     src="../../static/img/no-image-man.png" alt="User dropdown">
+                <div class="font-medium dark:text-white">
+                  <div>{{ user.name }}</div>
+                  <div class="text-sm text-gray-500 dark:text-gray-400">Joined in {{ user.created_at }}</div>
+                </div>
+              </div>
+              <!-- User dropdown -->
+              <div v-if="showProfile" class="absolute z-10 sm:right-20 top-16 sm:top-20 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                  <div class="font-medium truncate">{{ user.email }}</div>
+                </div>
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
+                  <li>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                  </li>
+                </ul>
+                <div class="py-1">
+                  <button @click="authStore.logout()"
+                     class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                    Sign out
+                  </button>
+                </div>
+              </div>
+            </div>
         </div>
         <div class="relative overflow-x-auto shadow-md rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 shadow-md">
@@ -115,7 +145,19 @@
 </template>
 
 <script setup>
+import {ref} from "vue";
 import InputSearch from "../components/InputSearch.vue";
 import InputDropdown from "../components/InputDropdown.vue";
 import ButtonDefault from "../components/ButtonDefault.vue";
+import {useAuthStore} from "../stores/AuthStore.js";
+
+const authStore = useAuthStore();
+
+const user = JSON.parse(localStorage.getItem('authUser'))
+const showProfile = ref(false)
+
+const toggleProfile = () => {
+  showProfile.value = !showProfile.value
+}
+
 </script>
