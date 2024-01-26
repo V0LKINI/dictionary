@@ -7,7 +7,7 @@
               <button-default text="Add new translation"/>
             </div>
             <div class="flex flex-wrap justify-start sm:justify-end space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
-              <div @click="toggleProfile" class="flex items-center gap-4">
+              <div @click="toggleProfile()" v-click-outside="() => toggleProfile(true)" class="flex items-center gap-4">
                 <img type="button"
                      data-dropdown-placement="bottom-start" class="w-10 h-10 rounded-full cursor-pointer"
                      src="../../static/img/no-image-man.png" alt="User dropdown">
@@ -156,8 +156,12 @@ const authStore = useAuthStore();
 const user = JSON.parse(localStorage.getItem('authUser'))
 const showProfile = ref(false)
 
-const toggleProfile = () => {
-  showProfile.value = !showProfile.value
+const toggleProfile = (clickOutside = false) => {
+  if (clickOutside) {
+    showProfile.value = false
+  } else {
+    showProfile.value = !showProfile.value
+  }
 }
 
 </script>
