@@ -13,8 +13,8 @@
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                 <form>
-                    <input-text label="Email or phone"/>
-                    <input-text label="Password" type="password"/>
+                    <input-text v-model="credentials" label="Email"/>
+                    <input-text v-model="password" label="Password" type="password"/>
 
                     <div class="mt-6 flex items-center justify-between">
                         <input-checkbox label="Remember me"/>
@@ -23,7 +23,7 @@
                         </div>
                     </div>
 
-                    <button-default text="Sign In"/>
+                    <button-default @click="login" text="Sign In"/>
                 </form>
             </div>
         </div>
@@ -31,9 +31,21 @@
 </template>
 
 <script setup>
-import ButtonDefault from "../../components/ButtonDefault.vue";
-import LinkDefault from "../../components/LinkDefault.vue";
-import LinkRouter from "../../components/LinkRouter.vue";
-import InputText from "../../components/InputText.vue";
-import InputCheckbox from "../../components/InputCheckbox.vue";
+
+import {ref} from "vue";
+import {useAuthStore} from "../stores/AuthStore.js";
+import ButtonDefault from "../components/ButtonDefault.vue";
+import LinkDefault from "../components/LinkDefault.vue";
+import LinkRouter from "../components/LinkRouter.vue";
+import InputText from "../components/InputText.vue";
+import InputCheckbox from "../components/InputCheckbox.vue";
+
+const authStore = useAuthStore();
+const credentials = ref('');
+const password = ref('');
+
+const login = () => {
+    authStore.login(credentials.value, password.value)
+}
+
 </script>
