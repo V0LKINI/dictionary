@@ -17,15 +17,16 @@
                 </div>
               </div>
               <!-- User dropdown -->
-              <div v-if="showProfile" class="absolute z-10 sm:right-20 top-16 sm:top-20 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+              <div v-if="showMenu" class="absolute z-10 sm:right-20 top-16 sm:top-20 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                 <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
                   <div class="font-medium truncate">{{ user.email }}</div>
                 </div>
-                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
-                  <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                  </li>
-                </ul>
+                <div class="py-1">
+                  <button @click="openProfileDialog()"
+                          class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                    Settings
+                  </button>
+                </div>
                 <div class="py-1">
                   <button @click="authStore.logout()"
                      class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
@@ -142,26 +143,70 @@
             </table>
         </div>
     </div>
+
+  <modal v-if="showProfileDialog" @closeDialog="closeProfileDialog">
+    <template #title>Edit Profile</template>
+    <template #body>
+      <form>
+        <div class="flex flex-col">
+          <input-text v-model="name" label="Name"/>
+          <input-text v-model="email" label="Email"/>
+          <input-text v-model="password" label="Password" type="password"/>
+          <input-text v-model="passwordConfirm" label="Confirm password" type="password"/>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <button-default @click.prevent="saveProfile" text="Save data"/>
+          <button-cancel @click.prevent="closeProfileDialog"/>
+        </div>
+      </form>
+    </template>
+  </modal>
 </template>
 
 <script setup>
 import {ref} from "vue";
 import InputSearch from "../components/InputSearch.vue";
 import InputDropdown from "../components/InputDropdown.vue";
+import InputText from "../components/InputText.vue";
 import ButtonDefault from "../components/ButtonDefault.vue";
+import ButtonCancel from "../components/ButtonCancel.vue";
+import Modal from "../components/Modal.vue";
 import {useAuthStore} from "../stores/AuthStore.js";
 
 const authStore = useAuthStore();
 
 const user = JSON.parse(localStorage.getItem('authUser'))
-const showProfile = ref(false)
+
+const showMenu = ref(false)
+const showProfileDialog = ref(false)
+
+const name = ref('')
+const email = ref('')
+const password = ref('')
+const passwordConfirm = ref('')
 
 const toggleProfile = (clickOutside = false) => {
   if (clickOutside) {
-    showProfile.value = false
+    showMenu.value = false
   } else {
-    showProfile.value = !showProfile.value
+    showMenu.value = !showMenu.value
   }
+}
+
+const openProfileDialog = () => {
+  showProfileDialog.value = true
+
+  name.value = user.name
+  email.value = user.email
+}
+
+const closeProfileDialog = () => {
+  showProfileDialog.value = false
+}
+
+const saveProfile = () => {
+  console.log('saving')
 }
 
 </script>
