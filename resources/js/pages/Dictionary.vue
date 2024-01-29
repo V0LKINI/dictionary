@@ -151,8 +151,8 @@
         <div class="flex flex-col">
           <input-text v-model="name" label="Name"/>
           <input-text v-model="email" label="Email"/>
-          <input-text v-model="password" label="Password" type="password"/>
-          <input-text v-model="passwordConfirm" label="Confirm password" type="password"/>
+          <input-text v-model="password" label="Password" type="password" autocomplete="new-password"/>
+          <input-text v-model="passwordConfirm" label="Confirm password" type="password" autocomplete="new-password"/>
         </div>
 
         <div class="flex items-center space-x-4">
@@ -173,10 +173,11 @@ import ButtonDefault from "../components/ButtonDefault.vue";
 import ButtonCancel from "../components/ButtonCancel.vue";
 import Modal from "../components/Modal.vue";
 import {useAuthStore} from "../stores/AuthStore.js";
+import axios from "axios";
 
 const authStore = useAuthStore();
 
-const user = JSON.parse(localStorage.getItem('authUser'))
+const user = ref(JSON.parse(localStorage.getItem('authUser')))
 
 const showMenu = ref(false)
 const showProfileDialog = ref(false)
@@ -197,8 +198,8 @@ const toggleProfile = (clickOutside = false) => {
 const openProfileDialog = () => {
   showProfileDialog.value = true
 
-  name.value = user.name
-  email.value = user.email
+  name.value = user.value.name
+  email.value = user.value.email
 }
 
 const closeProfileDialog = () => {
@@ -206,7 +207,24 @@ const closeProfileDialog = () => {
 }
 
 const saveProfile = () => {
-  console.log('saving')
+  axios.put('/api/profile', {
+    id: user.value.id,
+    name: name.value,
+    email: email.value,
+    password: password.value,
+    password_confirm: passwordConfirm.value
+  }).then((r) => {
+    let response = r.data;
+
+    if (response.success) {
+      user.value = response.data.user;
+      localStorage.setItem('authUser', JSON.stringify(response.data.user));
+    } else {
+      error.value = response.error.message
+    }
+  }).catch((e) => {
+    console.log(e);
+  });
 }
 
 </script>
