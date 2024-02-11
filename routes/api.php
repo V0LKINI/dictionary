@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Site\AuthController;
+use App\Http\Controllers\Site\DictionaryController;
 use App\Http\Controllers\Site\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,5 +22,9 @@ Route::post('register', [AuthController::class, 'register'])->middleware('guest'
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::put('/', [ProfileController::class, 'save'])->name('save');
+    });
+
+    Route::prefix('dictionary')->name('dictionary.')->group(function () {
+        Route::post('/translate', [DictionaryController::class, 'translate'])->name('translate');
     });
 });

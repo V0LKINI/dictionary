@@ -4,7 +4,7 @@
             <div class="flex flex-column sm:flex-row flex-wrap justify-start space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
               <input-dropdown/>
               <input-search label="Search" placeholder="Search for words"/>
-              <button-default text="Add new translation"/>
+              <button-default @click.prevent="openAddDialog" text="Add new translation"/>
             </div>
             <div class="flex flex-wrap justify-start sm:justify-end space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
               <div @click="toggleProfile()" v-click-outside="() => toggleProfile(true)" class="flex items-center gap-4">
@@ -162,10 +162,26 @@
       </form>
     </template>
   </modal>
+
+  <modal v-if="showAddDialog" @closeDialog="closeAddDialog">
+    <template #title>Add new translations</template>
+    <template #body>
+      <form>
+        <div class="flex flex-col">
+          <input-text v-model="text" label="Word or phrase"/>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <button-default @click.prevent="saveTranslation" text="Save"/>
+          <button-cancel @click.prevent="closeAddDialog"/>
+        </div>
+      </form>
+    </template>
+  </modal>
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import InputSearch from "../components/InputSearch.vue";
 import InputDropdown from "../components/InputDropdown.vue";
 import InputText from "../components/InputText.vue";
@@ -181,11 +197,15 @@ const user = ref(JSON.parse(localStorage.getItem('authUser')))
 
 const showMenu = ref(false)
 const showProfileDialog = ref(false)
+const showAddDialog = ref(false)
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const passwordConfirm = ref('')
+const text = ref('')
+
+let timeout = null;
 
 const toggleProfile = (clickOutside = false) => {
   if (clickOutside) {
@@ -195,6 +215,7 @@ const toggleProfile = (clickOutside = false) => {
   }
 }
 
+//Profile dialog
 const openProfileDialog = () => {
   showProfileDialog.value = true
 
@@ -225,6 +246,43 @@ const saveProfile = () => {
   }).catch((e) => {
     console.log(e);
   });
+}
+
+//Add dialog
+const openAddDialog = () => {
+    showAddDialog.value = true
+}
+
+const closeAddDialog = () => {
+    showAddDialog.value = false
+}
+
+watch(text, () => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+        getTranslation()
+    }, 800);
+})
+
+const getTranslation = () => {
+    axios.post('/api/dictionary/translate', {
+        text: text.value,
+    }).then((r) => {
+        let response = r.data;
+
+        if (response.success) {
+            console.log(response.data)
+        } else {
+            error.value = response.error.message
+        }
+    }).catch((e) => {
+        console.log(e);
+    });
+}
+
+const saveTranslation = () => {
+    //TODO
 }
 
 </script>
