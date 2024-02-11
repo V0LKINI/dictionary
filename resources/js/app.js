@@ -4,6 +4,7 @@ import axios from 'axios';
 import { createApp } from 'vue';
 import router from './router.js'
 import App from "./App.vue";
+import vClickOutside from "click-outside-vue3"
 
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -20,4 +21,5 @@ if (localStorage.getItem('token')) {
 createApp(App)
     .use(createPinia())
     .use(router)
+    .use(vClickOutside)
     .mount("#app");
