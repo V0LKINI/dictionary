@@ -9,7 +9,7 @@
             <div class="flex flex-wrap justify-start sm:justify-end space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
               <div @click="toggleProfile()" v-click-outside="() => toggleProfile(true)" class="flex items-center gap-4">
                 <img type="button"
-                     data-dropdown-placement="bottom-start" class="w-10 h-10 rounded-full cursor-pointer"
+                     data-dropdown-placement="bottom-start" class="w-10 h-10 rounded-full cursor-pointer object-cover"
                      :src="user.image != null ? user.image : defaultProfileImage" alt="User dropdown">
                 <div class="font-medium dark:text-white">
                   <div>{{ user.name }}</div>
