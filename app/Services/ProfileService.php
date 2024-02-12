@@ -5,11 +5,12 @@ namespace App\Services;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileService
 {
-    public function save(array $data): Model | Exception
+    public function save(array $data, ?UploadedFile $image): Model | Exception
     {
         $user = User::findOrFail($data['id']);
 
@@ -19,7 +20,9 @@ class ProfileService
             $data['password'] = Hash::make($data['password']);
         }
 
-        $user->update($data);
+        $user->image = $image;
+        $user->fill($data);
+        $user->save();
 
         return $user;
     }

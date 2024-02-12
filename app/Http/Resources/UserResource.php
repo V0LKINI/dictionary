@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'surname' => $this->surname,
             'email' => $this->email,
+            'image' =>  $this->image ? url('/storage/' . $this->image) : null,
             'created_at' => Carbon::parse($this->created_at)->format('d F Y')
         ];
     }
