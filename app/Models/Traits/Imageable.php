@@ -25,10 +25,6 @@ trait Imageable
             $ext = $value->getClientOriginalExtension();
             $filename = md5(time() . uniqid());
 
-            if (!Storage::exists($folder)) {
-                File::makeDirectory(storage_path('app/') . $folder);
-            }
-
             Storage::putFileAs($folder, $value, $filename . '.' . $ext);
 
             if ($this->{$attribute}) {
