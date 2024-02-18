@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TranslateRequest;
+use App\Services\CrawlerService;
 use App\Services\DictionaryService;
 use Illuminate\Http\Request;
 
 class DictionaryController extends Controller
 {
-    public function __construct(private readonly DictionaryService $dictionaryService) {}
+    public function __construct(
+        private readonly DictionaryService $dictionaryService,
+        private readonly CrawlerService $crawlerService,
+    ) {}
 
     /**
      * Save user data
@@ -19,9 +23,10 @@ class DictionaryController extends Controller
     public function translate(TranslateRequest $request)
     {
         try {
-            $this->dictionaryService->getTranslation(text: $request->text);
+            $html = $this->crawlerService->sendRequest(text: $request->text);
+            $data = $this->crawlerService->crawl(html: $html);
 
-            return $this->success();
+            return $this->success($data);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
