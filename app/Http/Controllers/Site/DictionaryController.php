@@ -26,6 +26,12 @@ class DictionaryController extends Controller
             $html = $this->crawlerService->sendRequest(text: $request->text);
             $data = $this->crawlerService->crawl(html: $html);
 
+            if (empty($data)) {
+                //TODO Используем переводчик
+            }
+
+            //TODO сохраняем полученные данные
+
             return $this->success($data);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
