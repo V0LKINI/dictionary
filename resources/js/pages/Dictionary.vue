@@ -164,15 +164,19 @@
   </modal>
 
   <modal v-if="showAddDialog" @closeDialog="closeAddDialog">
-    <template #title>Add new translations</template>
+    <template #title>Add new translation</template>
     <template #body>
       <form>
         <div class="flex flex-col">
           <input-text v-model="text" label="Word or phrase"/>
         </div>
 
+        <div class="flex flex-col">
+          <input-text v-model="translation" label="Translation"/>
+        </div>
+
         <div class="flex items-center space-x-4">
-          <button-default @click.prevent="saveTranslation" text="Save"/>
+          <button-default @click.prevent="save" text="Save"/>
           <button-cancel @click.prevent="closeAddDialog"/>
         </div>
       </form>
@@ -191,21 +195,21 @@ import Modal from "../components/Modal.vue";
 import {useAuthStore} from "../stores/AuthStore.js";
 import axios from "axios";
 
-const authStore = useAuthStore();
-
-const user = ref(JSON.parse(localStorage.getItem('authUser')))
-
 const showMenu = ref(false)
 const showProfileDialog = ref(false)
 const showAddDialog = ref(false)
 
+//Auth
+const authStore = useAuthStore();
+const user = ref(JSON.parse(localStorage.getItem('authUser')))
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const passwordConfirm = ref('')
-const text = ref('')
 
-let timeout = null;
+//Add translation form
+const text = ref('')
+const translation = ref('')
 
 const toggleProfile = (clickOutside = false) => {
   if (clickOutside) {
@@ -257,13 +261,6 @@ const closeAddDialog = () => {
     showAddDialog.value = false
 }
 
-watch(text, () => {
-    clearTimeout(timeout);
-
-    timeout = setTimeout(() => {
-        getTranslation()
-    }, 800);
-})
 
 const getTranslation = () => {
     axios.post('/api/dictionary/translate', {
@@ -281,8 +278,21 @@ const getTranslation = () => {
     });
 }
 
-const saveTranslation = () => {
-    //TODO
+const save = () => {
+  axios.post('/api/dictionary/save', {
+    text: text.value,
+    translation: translation.value,
+  }).then((r) => {
+    let response = r.data;
+
+    if (response.success) {
+      console.log(response.data)
+    } else {
+      error.value = response.error.message
+    }
+  }).catch((e) => {
+    console.log(e);
+  });
 }
 
 </script>

@@ -3,14 +3,15 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\Word;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 class DictionaryService
 {
-    public function getTranslation(string $text): array
+    public function save(array $data): void
     {
-        return [];
+        $word = Word::create(['text' => $data['text']]);
     }
 }

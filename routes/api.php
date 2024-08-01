@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('login', [AuthController::class, 'login'])->middleware('guest');
-Route::post('register', [AuthController::class, 'register'])->middleware('guest');
+Route::post('login', [AuthController::class, 'login'])->middleware('guest')->name('auth.login');
+Route::post('register', [AuthController::class, 'register'])->middleware('guest')->name('auth.register');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('profile')->name('profile.')->group(function () {
@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('dictionary')->name('dictionary.')->group(function () {
-        Route::post('/translate', [DictionaryController::class, 'translate'])->name('translate');
+        Route::post('/save', [DictionaryController::class, 'save'])->name('save');
+        Route::get('/translate', [DictionaryController::class, 'translate'])->name('translate');
+        Route::get('/crawl', [DictionaryController::class, 'crawl'])->name('crawl');
     });
 });
