@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DictionaryRequest;
 use App\Http\Requests\TranslateRequest;
+use App\Http\Resources\WordsListResource;
 use App\Services\CrawlerService;
 use App\Services\DictionaryService;
 use Illuminate\Http\JsonResponse;
@@ -16,6 +17,22 @@ class DictionaryController extends Controller
         private readonly DictionaryService $dictionaryService,
         private readonly CrawlerService $crawlerService,
     ) {}
+
+    /**
+     * Get words list
+     *
+     * @return JsonResponse|true[]
+     */
+    public function list()
+    {
+        try {
+            $data = $this->dictionaryService->getList();
+
+            return $this->success(WordsListResource::collection($data));
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
+    }
 
 
     /**
@@ -46,7 +63,7 @@ class DictionaryController extends Controller
     }
 
     /**
-     * Save translation
+     * Save word
      *
      * @param DictionaryRequest $request
      * @return JsonResponse|true[]
@@ -60,7 +77,24 @@ class DictionaryController extends Controller
 
             return $this->success();
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * Delete words
+     *
+     * @param DictionaryRequest $request
+     * @return JsonResponse|true[]
+     */
+    public function delete(int $id)
+    {
+        try {
+            $this->dictionaryService->delete(id: $id);
+
+            return $this->success();
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
         }
     }
 }

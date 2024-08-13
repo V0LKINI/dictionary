@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Example extends Model
 {
-    use HasFactory, Uuid;
+    use HasFactory;
 
     /*
     |--------------------------------------------------------------------------

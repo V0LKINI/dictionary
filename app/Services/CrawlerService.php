@@ -12,7 +12,7 @@ class CrawlerService
 
     public function __construct()
     {
-        $this->baseUrl = env('CRAWL_BASE_URL');
+        $this->baseUrl = config('services.crawl.base_url');
     }
 
     public function sendRequest(string $text): string

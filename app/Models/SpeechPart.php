@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SpeechPart extends Model
 {
-    use HasFactory, Uuid;
+    use HasFactory;
 
     /*
     |--------------------------------------------------------------------------

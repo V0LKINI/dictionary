@@ -2,16 +2,36 @@
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Models\Translation;
 use App\Models\Word;
-use Exception;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class DictionaryService
 {
+    public function getList(): Collection
+    {
+        $data = Word::with('translations')->orderByDesc('created_at')->get();
+
+        return $data;
+    }
+
     public function save(array $data): void
     {
-        $word = Word::create(['text' => $data['text']]);
+        if (Word::where(['user_id' => auth()->id(), 'text' => $data['text']])->exists()) {
+            throw new \Exception('Word already exists', 422);
+        }
+
+        DB::transaction(function () use ($data) {
+            $word = Word::create(['user_id' => auth()->id(), 'text' => $data['text']]);
+
+            Translation::create(['word_id' => $word->id, 'text' => $data['translation']]);
+        });
+    }
+
+    public function delete(int $id): void
+    {
+        $item = Word::findOrFail($id);
+        $item->delete();
     }
 }

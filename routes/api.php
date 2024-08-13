@@ -25,8 +25,10 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('dictionary')->name('dictionary.')->group(function () {
+        Route::get('/list', [DictionaryController::class, 'list'])->name('list');
         Route::post('/save', [DictionaryController::class, 'save'])->name('save');
         Route::get('/translate', [DictionaryController::class, 'translate'])->name('translate');
         Route::get('/crawl', [DictionaryController::class, 'crawl'])->name('crawl');
+        Route::delete('/{id}', [DictionaryController::class, 'delete'])->name('delete');
     });
 });

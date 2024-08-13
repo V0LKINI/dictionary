@@ -4,7 +4,7 @@
             <div class="flex flex-column sm:flex-row flex-wrap justify-start space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
               <input-dropdown/>
               <input-search label="Search" placeholder="Search for words"/>
-              <button-default @click.prevent="openAddDialog" text="Add new translation"/>
+              <button-default @click.prevent="openWordDialog" text="Add new translation"/>
             </div>
             <div class="flex flex-wrap justify-start sm:justify-end space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
               <div @click="toggleProfile()" v-click-outside="() => toggleProfile(true)" class="flex items-center gap-4">
@@ -39,106 +39,42 @@
         <div class="relative overflow-x-auto shadow-md rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 shadow-md">
                 <thead class="border-y text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr class="dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="col" class="px-6 py-3">
-                        Word
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Transcription
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Translation
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Action
-                    </th>
-                </tr>
+                  <tr class="dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <th scope="col" class="px-6 py-3">
+                          Word
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                          Transcription
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                          Translation
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                          Date
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                          Action
+                      </th>
+                  </tr>
                 </thead>
                 <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <tr v-for="word in words" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Apple MacBook Pro 17"
+                      {{ word.text }}
                     </th>
                     <td class="px-6 py-4">
-                        Silver
+                      {{ word.transcription ?? '—' }}
                     </td>
                     <td class="px-6 py-4">
-                        Laptop
+                      {{ word.translations }}
                     </td>
                     <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Microsoft Surface Pro
-                    </th>
-                    <td class="px-6 py-4">
-                        White
+                      {{ word.created_at }}
                     </td>
                     <td class="px-6 py-4">
-                        Laptop PC
+                      <a @click.prevent="deleteWord(word.id)" class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
                     </td>
-                    <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Magic Mouse 2
-                    </th>
-                    <td class="px-6 py-4">
-                        Black
-                    </td>
-                    <td class="px-6 py-4">
-                        Accessories
-                    </td>
-                    <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Apple Watch
-                    </th>
-                    <td class="px-6 py-4">
-                        Silver
-                    </td>
-                    <td class="px-6 py-4">
-                        Accessories
-                    </td>
-                    <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        iPad
-                    </th>
-                    <td class="px-6 py-4">
-                        Gold
-                    </td>
-                    <td class="px-6 py-4">
-                        Tablet
-                    </td>
-                    <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
-                <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Apple iMac 27"
-                    </th>
-                    <td class="px-6 py-4">
-                        Silver
-                    </td>
-                    <td class="px-6 py-4">
-                        PC Desktop
-                    </td>
-                    <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
+                  </tr>
                 </tbody>
             </table>
         </div>
@@ -163,7 +99,7 @@
     </template>
   </modal>
 
-  <modal v-if="showAddDialog" @closeDialog="closeAddDialog">
+  <modal v-if="showAddDialog" @closeDialog="closeWordDialog">
     <template #title>Add new translation</template>
     <template #body>
       <form>
@@ -176,8 +112,8 @@
         </div>
 
         <div class="flex items-center space-x-4">
-          <button-default @click.prevent="save" text="Save"/>
-          <button-cancel @click.prevent="closeAddDialog"/>
+          <button-default @click.prevent="saveWord" text="Save"/>
+          <button-cancel @click.prevent="closeWordDialog"/>
         </div>
       </form>
     </template>
@@ -207,7 +143,10 @@ const email = ref('')
 const password = ref('')
 const passwordConfirm = ref('')
 
-//Add translation form
+//Words
+const words = ref([])
+
+//Word adding form
 const text = ref('')
 const translation = ref('')
 
@@ -252,15 +191,14 @@ const saveProfile = () => {
   });
 }
 
-//Add dialog
-const openAddDialog = () => {
+//Word dialog
+const openWordDialog = () => {
     showAddDialog.value = true
 }
 
-const closeAddDialog = () => {
+const closeWordDialog = () => {
     showAddDialog.value = false
 }
-
 
 const getTranslation = () => {
     axios.post('/api/dictionary/translate', {
@@ -278,7 +216,7 @@ const getTranslation = () => {
     });
 }
 
-const save = () => {
+const saveWord = () => {
   axios.post('/api/dictionary/save', {
     text: text.value,
     translation: translation.value,
@@ -286,7 +224,8 @@ const save = () => {
     let response = r.data;
 
     if (response.success) {
-      console.log(response.data)
+      showAddDialog.value = false
+      getWords()
     } else {
       error.value = response.error.message
     }
@@ -294,5 +233,36 @@ const save = () => {
     console.log(e);
   });
 }
+
+const deleteWord = (id) => {
+  axios.delete('/api/dictionary/' + id).then((r) => {
+    let response = r.data;
+
+    if (response.success) {
+      getWords()
+    } else {
+      error.value = response.error.message
+    }
+  }).catch((e) => {
+    console.log(e);
+  });
+}
+
+const getWords = () => {
+  axios.get('/api/dictionary/list').then((r) => {
+    let response = r.data;
+
+    if (response.success) {
+      words.value = response.data
+    } else {
+      error.value = response.error.message
+    }
+  }).catch((e) => {
+    console.log(e);
+  });
+}
+
+//get initial data
+getWords()
 
 </script>
