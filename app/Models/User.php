@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Traits\Imageable;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,7 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Imageable;
 
     /*
     |--------------------------------------------------------------------------
@@ -86,4 +87,9 @@ class User extends Authenticatable
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+    public function setImageAttribute($value)
+    {
+        $this->setImage('image', $this->getTable(), $value);
+    }
 }

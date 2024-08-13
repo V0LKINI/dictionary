@@ -21,7 +21,9 @@ class ProfileController extends Controller
     {
         try {
             $data = $request->safe()->except('password_confirm');
-            $user = $this->profileService->save(data: $data);
+            $image = $request->file('image');
+
+            $user = $this->profileService->save(data: $data, image: $image);
 
             $response = [
                 'user' => UserResource::make($user),
