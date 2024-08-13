@@ -3,8 +3,8 @@
         <div class="flex flex-column flex-col-reverse sm:flex-row  flex-wrap  justify-between">
             <div class="flex flex-column sm:flex-row flex-wrap justify-start space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
               <input-dropdown/>
-              <input-search label="Search" placeholder="Search for words"/>
-              <button-default text="Add new translation"/>
+              <input-search v-model="searchInput" label="Search" placeholder="Search for words"/>
+              <button-default @click.prevent="openWordDialog" text="Add new translation"/>
             </div>
             <div class="flex flex-wrap justify-start sm:justify-end space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
               <div @click="toggleProfile()" v-click-outside="() => toggleProfile(true)" class="flex items-center gap-4">
@@ -39,106 +39,42 @@
         <div class="relative overflow-x-auto shadow-md rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 shadow-md">
                 <thead class="border-y text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr class="dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="col" class="px-6 py-3">
-                        Word
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Transcription
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Translation
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Action
-                    </th>
-                </tr>
+                  <tr class="dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <th scope="col" class="px-6 py-3">
+                          Word
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                          Transcription
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                          Translation
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                          Date
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                          Action
+                      </th>
+                  </tr>
                 </thead>
                 <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <tr v-for="word in words" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Apple MacBook Pro 17"
+                      {{ word.text }}
                     </th>
                     <td class="px-6 py-4">
-                        Silver
+                      {{ word.transcription ?? '—' }}
                     </td>
                     <td class="px-6 py-4">
-                        Laptop
+                      {{ word.translations }}
                     </td>
                     <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Microsoft Surface Pro
-                    </th>
-                    <td class="px-6 py-4">
-                        White
+                      {{ word.created_at }}
                     </td>
                     <td class="px-6 py-4">
-                        Laptop PC
+                      <a @click.prevent="deleteWord(word.id)" class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
                     </td>
-                    <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Magic Mouse 2
-                    </th>
-                    <td class="px-6 py-4">
-                        Black
-                    </td>
-                    <td class="px-6 py-4">
-                        Accessories
-                    </td>
-                    <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Apple Watch
-                    </th>
-                    <td class="px-6 py-4">
-                        Silver
-                    </td>
-                    <td class="px-6 py-4">
-                        Accessories
-                    </td>
-                    <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        iPad
-                    </th>
-                    <td class="px-6 py-4">
-                        Gold
-                    </td>
-                    <td class="px-6 py-4">
-                        Tablet
-                    </td>
-                    <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
-                <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Apple iMac 27"
-                    </th>
-                    <td class="px-6 py-4">
-                        Silver
-                    </td>
-                    <td class="px-6 py-4">
-                        PC Desktop
-                    </td>
-                    <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
-                    </td>
-                </tr>
+                  </tr>
                 </tbody>
             </table>
         </div>
@@ -176,10 +112,30 @@
       </form>
     </template>
   </modal>
+
+  <modal v-if="showAddDialog" @closeDialog="closeWordDialog">
+    <template #title>Add new translation</template>
+    <template #body>
+      <form>
+        <div class="flex flex-col">
+          <input-text v-model="text" label="Word or phrase"/>
+        </div>
+
+        <div class="flex flex-col">
+          <input-text v-model="translation" label="Translation"/>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <button-default @click.prevent="saveWord" text="Save"/>
+          <button-cancel @click.prevent="closeWordDialog"/>
+        </div>
+      </form>
+    </template>
+  </modal>
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import InputSearch from "../components/InputSearch.vue";
 import InputDropdown from "../components/InputDropdown.vue";
 import InputText from "../components/InputText.vue";
@@ -191,18 +147,26 @@ import {useAuthStore} from "../stores/AuthStore.js";
 import axios from "axios";
 import defaultProfileImage from "../../static/img/no-image-man.png";
 
+const showMenu = ref(false)
+const showProfileDialog = ref(false)
+const showAddDialog = ref(false)
+
+//Auth
 const authStore = useAuthStore();
-
-const user = ref(JSON.parse(localStorage.getItem('authUser')));
-
-const showMenu = ref(false);
-const showProfileDialog = ref(false);
-
+const user = ref(JSON.parse(localStorage.getItem('authUser')))
 const image = ref(null);
-const name = ref('');
-const email = ref('');
-const password = ref('');
-const passwordConfirm = ref('');
+const name = ref('')
+const email = ref('')
+const password = ref('')
+const passwordConfirm = ref('')
+
+//Words
+const words = ref([])
+const searchInput = ref('')
+
+//Word adding form
+const text = ref('')
+const translation = ref('')
 
 const toggleProfile = (clickOutside = false) => {
   if (clickOutside) {
@@ -212,6 +176,7 @@ const toggleProfile = (clickOutside = false) => {
   }
 }
 
+//Profile dialog
 const openProfileDialog = () => {
   showProfileDialog.value = true;
   setUserFields();
@@ -261,5 +226,91 @@ const saveProfile = () => {
     console.log(e);
   });
 }
+
+//Word dialog
+const openWordDialog = () => {
+    showAddDialog.value = true
+}
+
+const closeWordDialog = () => {
+    showAddDialog.value = false
+}
+
+const getTranslation = () => {
+    axios.post('/api/dictionary/translate', {
+        text: text.value,
+    }).then((r) => {
+        let response = r.data;
+
+        if (response.success) {
+            console.log(response.data)
+        } else {
+            error.value = response.error.message
+        }
+    }).catch((e) => {
+        console.log(e);
+    });
+}
+
+const saveWord = () => {
+  axios.post('/api/dictionary/save', {
+    text: text.value,
+    translation: translation.value,
+  }).then((r) => {
+    let response = r.data;
+
+    if (response.success) {
+      showAddDialog.value = false
+      getWords()
+    } else {
+      error.value = response.error.message
+    }
+  }).catch((e) => {
+    console.log(e);
+  });
+}
+
+const deleteWord = (id) => {
+  axios.delete('/api/dictionary/' + id).then((r) => {
+    let response = r.data;
+
+    if (response.success) {
+      getWords()
+    } else {
+      error.value = response.error.message
+    }
+  }).catch((e) => {
+    console.log(e);
+  });
+}
+
+const getWords = (params = []) => {
+  let config = {
+    params: params,
+  }
+
+  axios.get('/api/dictionary/list', config).then((r) => {
+    let response = r.data;
+
+    if (response.success) {
+      words.value = response.data
+    } else {
+      error.value = response.error.message
+    }
+  }).catch((e) => {
+    console.log(e);
+  });
+}
+
+watch(searchInput, () => {
+  let params = {
+    search: searchInput.value,
+  }
+
+  getWords(params)
+})
+
+//get initial data
+getWords()
 
 </script>

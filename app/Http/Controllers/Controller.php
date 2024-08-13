@@ -39,6 +39,6 @@ class Controller extends BaseController
             $response['data'] = $data;
         }
 
-        return $response;
+        return response()->json($response)->setStatusCode($status);
     }
 }
