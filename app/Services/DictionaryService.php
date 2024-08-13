@@ -12,7 +12,7 @@ class DictionaryService
     public function getList(): Collection
     {
         $query = Word::with('translations')->orderByDesc('created_at');
-dd($_REQUEST);
+
         if ($search = request()->search) {
             $query->where('text', 'like', '%' . $search . '%');
         }
