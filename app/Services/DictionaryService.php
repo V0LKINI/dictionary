@@ -11,7 +11,13 @@ class DictionaryService
 {
     public function getList(): Collection
     {
-        $data = Word::with('translations')->orderByDesc('created_at')->get();
+        $query = Word::with('translations')->orderByDesc('created_at');
+dd($_REQUEST);
+        if ($search = request()->search) {
+            $query->where('text', 'like', '%' . $search . '%');
+        }
+
+        $data = $query->get();
 
         return $data;
     }

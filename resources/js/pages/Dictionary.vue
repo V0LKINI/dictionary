@@ -3,7 +3,7 @@
         <div class="flex flex-column flex-col-reverse sm:flex-row  flex-wrap  justify-between">
             <div class="flex flex-column sm:flex-row flex-wrap justify-start space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
               <input-dropdown/>
-              <input-search label="Search" placeholder="Search for words"/>
+              <input-search v-model="searchInput" label="Search" placeholder="Search for words"/>
               <button-default @click.prevent="openWordDialog" text="Add new translation"/>
             </div>
             <div class="flex flex-wrap justify-start sm:justify-end space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
@@ -145,6 +145,7 @@ const passwordConfirm = ref('')
 
 //Words
 const words = ref([])
+const searchInput = ref('')
 
 //Word adding form
 const text = ref('')
@@ -248,8 +249,12 @@ const deleteWord = (id) => {
   });
 }
 
-const getWords = () => {
-  axios.get('/api/dictionary/list').then((r) => {
+const getWords = (params = []) => {
+  let config = {
+    params: params,
+  }
+
+  axios.get('/api/dictionary/list', config).then((r) => {
     let response = r.data;
 
     if (response.success) {
@@ -261,6 +266,14 @@ const getWords = () => {
     console.log(e);
   });
 }
+
+watch(searchInput, () => {
+  let params = {
+    search: searchInput.value,
+  }
+
+  getWords(params)
+})
 
 //get initial data
 getWords()

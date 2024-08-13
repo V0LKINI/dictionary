@@ -8,14 +8,27 @@
             <input class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                    id="inputSearch"
                    type="text"
+                   @keyup="changeValue"
                    :placeholder="placeholder">
         </div>
     </div>
 </template>
 
 <script setup>
+import {toRefs} from "vue";
+
 const props = defineProps({
-    label: {type: String, default: ''},
-    placeholder: {type: String, default: ''},
+  label: {type: String, default: ''},
+  placeholder: {type: String, default: ''},
+  modelValue: {type: String, default: ''},
 });
+
+const {modelValue} = toRefs(props);
+
+const emit = defineEmits(['update:modelValue', 'selected', 'keyup'])
+
+const changeValue = (event) => {
+  emit('update:modelValue', event.target.value);
+  emit('keyup', event.target.value);
+}
 </script>

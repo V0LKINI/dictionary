@@ -23,7 +23,7 @@ class DictionaryController extends Controller
      *
      * @return JsonResponse|true[]
      */
-    public function list()
+    public function list(Request $request)
     {
         try {
             $data = $this->dictionaryService->getList();
