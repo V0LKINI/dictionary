@@ -13,8 +13,8 @@
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                 <form>
-                    <input-text v-model="credentials" label="Email"/>
-                    <input-text v-model="password" label="Password" type="password"/>
+                    <input-text v-model="credentials" :v$="v$.credentials" label="Email"/>
+                    <input-text v-model="password" :v$="v$.password" label="Password" type="password"/>
 
                     <div class="mt-6 flex items-center justify-between">
                         <input-checkbox label="Remember me"/>
@@ -32,20 +32,54 @@
 
 <script setup>
 
-import {ref} from "vue";
+import {watch, computed, reactive, ref} from "vue";
 import {useAuthStore} from "../stores/AuthStore.js";
 import ButtonDefault from "../components/ButtonDefault.vue";
 import LinkDefault from "../components/LinkDefault.vue";
 import LinkRouter from "../components/LinkRouter.vue";
 import InputText from "../components/InputText.vue";
 import InputCheckbox from "../components/InputCheckbox.vue";
+import useVuelidate from '@vuelidate/core'
+import {required, email} from '@vuelidate/validators'
 
 const authStore = useAuthStore();
 const credentials = ref('');
 const password = ref('');
 
+//Validation
+const rules = computed(() => ({
+  credentials: {required, email},
+  password: {required},
+}));
+
+let state = reactive({
+  credentials: "",
+  password: "",
+});
+
+watch([credentials, password], () => {
+  state.credentials = credentials;
+  state.password = password;
+});
+
+const v$ = useVuelidate(rules, state)
+
 const login = () => {
-    authStore.login(credentials.value, password.value)
+    authStore.login(credentials.value, password.value).then(() => {
+      if (authStore.error) {
+        let error = JSON.parse(authStore.error);
+
+        //TODO
+        // if (error.email) {
+        //   v$.credentials.$error = true;
+        //   v$.credentials.$message = error.email[0];
+        // }
+        // if (error.password) {
+        //   v$.password.$error = true
+        //   v$.password.$message = error.password[0]
+        // }
+      }
+    });
 }
 
 </script>

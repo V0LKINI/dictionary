@@ -30,11 +30,9 @@ export const useAuthStore = defineStore("authStore", () => {
                 localStorage.setItem('token', response.data.token);
 
                 router.push({name: 'Dictionary'})
-            } else {
-                error.value = response.error.message
             }
         }).catch((e) => {
-            console.log(e);
+            error.value = e.response.data.error.message
         });
     };
 
@@ -58,11 +56,9 @@ export const useAuthStore = defineStore("authStore", () => {
                 localStorage.setItem('token', response.data.token);
 
                 router.push({name: 'Dictionary'})
-            } else {
-                error.value = response.error.message
             }
         }).catch((e) => {
-            console.log(e);
+            error.value = e.response.data.error.message
         });
     };
 

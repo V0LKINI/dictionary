@@ -30,7 +30,7 @@ class DictionaryController extends Controller
 
             return $this->success(WordsListResource::collection($data));
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error($e->getMessage(), $e->getCode());
         }
     }
 

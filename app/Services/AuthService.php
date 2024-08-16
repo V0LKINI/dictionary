@@ -13,11 +13,11 @@ class AuthService
         $user = User::where('email', $credentials)->first();
 
         if (!$user) {
-            throw new Exception(message: 'User not found', code: 400);
+            throw new Exception(message: json_encode(['email' => ['User not found']]), code: 422);
         }
 
         if (!Hash::check($password, $user->password)) {
-            throw new Exception(message: 'Wrong password', code: 400);
+            throw new Exception(message: json_encode(['password' => ['Wrong password']]), code: 422);
         }
 
         $user->tokens()->where('name', 'default')->delete();
