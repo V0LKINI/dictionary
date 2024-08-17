@@ -64,22 +64,32 @@ watch([credentials, password], () => {
 
 const v$ = useVuelidate(rules, state)
 
-const login = () => {
-    authStore.login(credentials.value, password.value).then(() => {
-      if (authStore.error) {
-        let error = JSON.parse(authStore.error);
+const login = async () => {
+    const result = await v$.value.$validate()
 
-        //TODO
-        // if (error.email) {
-        //   v$.credentials.$error = true;
-        //   v$.credentials.$message = error.email[0];
-        // }
-        // if (error.password) {
-        //   v$.password.$error = true
-        //   v$.password.$message = error.password[0]
-        // }
-      }
-    });
+    if (result) {
+        authStore.login(credentials.value, password.value).then(() => {
+            if (authStore.error) {
+                let error = JSON.parse(authStore.error);
+
+                //TODO
+                // if (error.email) {
+                //     v$.value.$error = true
+                //     v$.value.$errors = [{
+                //         $property: "credentials",
+                //         $message: error.email[0]
+                //     }]
+                // }
+                // if (error.password) {
+                //     v$.value.$error = true
+                //     v$.value.$errors = [{
+                //         $property: "password",
+                //         $message: error.password[0]
+                //     }]
+                // }
+            }
+        });
+    }
 }
 
 </script>
