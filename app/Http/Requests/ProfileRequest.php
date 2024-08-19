@@ -9,7 +9,7 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'uuid'],
+            'id' => ['required'],
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email,' . $this->id],
             'password' => ['nullable', 'string', 'min:6'],
