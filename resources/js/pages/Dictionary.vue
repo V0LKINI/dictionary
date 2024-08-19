@@ -11,25 +11,25 @@
                 <img type="button"
                      data-dropdown-placement="bottom-start" class="w-10 h-10 rounded-full cursor-pointer object-cover"
                      :src="user.image != null ? user.image : defaultProfileImage" alt="User dropdown">
-                <div class="font-medium dark:text-white">
+                <div class="font-medium">
                   <div>{{ user.name }}</div>
-                  <div class="text-sm text-gray-500 dark:text-gray-400">Joined in {{ user.created_at }}</div>
+                  <div class="text-sm text-gray-500">Joined in {{ user.created_at }}</div>
                 </div>
               </div>
               <!-- User dropdown -->
-              <div v-if="showMenu" class="absolute z-10 sm:right-20 top-16 sm:top-20 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+              <div v-if="showMenu" class="absolute z-10 sm:right-20 top-16 sm:top-20 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                <div class="px-4 py-3 text-sm text-gray-900">
                   <div class="font-medium truncate">{{ user.email }}</div>
                 </div>
                 <div class="py-1">
                   <button @click="openProfileDialog()"
-                          class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                          class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Settings
                   </button>
                 </div>
                 <div class="py-1">
                   <button @click="authStore.logout()"
-                     class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                     class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Sign out
                   </button>
                 </div>
@@ -37,9 +37,9 @@
             </div>
         </div>
         <div class="relative overflow-x-auto shadow-md rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 shadow-md">
-                <thead class="border-y text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr class="dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 shadow-md">
+                <thead class="border-y text-xs text-gray-700 uppercase bg-gray-50">
+                  <tr class="hover:bg-gray-50">
                       <th scope="col" class="px-6 py-3">
                           Word
                       </th>
@@ -58,8 +58,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="word in words" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <tr v-for="word in words" class="bg-white border-b hover:bg-gray-50">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                       {{ word.text }}
                     </th>
                     <td class="px-6 py-4">
@@ -72,7 +72,7 @@
                       {{ word.created_at }}
                     </td>
                     <td class="px-6 py-4">
-                      <a @click.prevent="deleteWord(word.id)" class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
+                      <a @click.prevent="deleteWord(word.id)" class="cursor-pointer font-medium text-blue-600 hover:underline">Delete</a>
                     </td>
                   </tr>
                 </tbody>
