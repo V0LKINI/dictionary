@@ -17,6 +17,10 @@ class DictionaryService
             $query->where('text', 'like', '%' . $search . '%');
         }
 
+        if ($period = request()->period) {
+            $query->where('created_at', '>=', now()->sub($period, 1));
+        }
+
         $data = $query->get();
 
         return $data;
