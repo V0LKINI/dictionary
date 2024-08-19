@@ -2,7 +2,7 @@
     <div class="min-h-screen bg-gray-50 flex flex-col py-6 sm:px-6 lg:px-8 px-6">
         <div class="flex flex-column flex-col-reverse sm:flex-row  flex-wrap  justify-between">
             <div class="flex flex-column sm:flex-row flex-wrap justify-start space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
-              <input-dropdown/>
+              <input-dropdown v-model="period" :options="periodOptions"/>
               <input-search v-model="searchInput" label="Search" placeholder="Search for words"/>
               <button-default @click.prevent="openWordDialog" text="Add new translation"/>
             </div>
@@ -164,6 +164,16 @@ const passwordConfirm = ref('')
 const words = ref([])
 const searchInput = ref('')
 
+const period = ref('')
+
+const periodOptions = ref([
+  {value: '', name: 'Select a period', selected: true},
+  {value: 'day', name: 'Last day', selected: false},
+  {value: 'week', name: 'Last week', selected: false},
+  {value: 'month', name: 'Last month', selected: false},
+  {value: 'year', name: 'Last year', selected: false}
+]);
+
 //Word adding form
 const text = ref('')
 const translation = ref('')
@@ -237,19 +247,7 @@ const closeWordDialog = () => {
 }
 
 const getTranslation = () => {
-    axios.post('/api/dictionary/translate', {
-        text: text.value,
-    }).then((r) => {
-        let response = r.data;
 
-        if (response.success) {
-            console.log(response.data)
-        } else {
-            error.value = response.error.message
-        }
-    }).catch((e) => {
-        console.log(e);
-    });
 }
 
 const saveWord = () => {
@@ -284,9 +282,12 @@ const deleteWord = (id) => {
   });
 }
 
-const getWords = (params = []) => {
+const getWords = () => {
   let config = {
-    params: params,
+    params: {
+      search: searchInput.value,
+      period: period.value,
+    },
   }
 
   axios.get('/api/dictionary/list', config).then((r) => {
@@ -302,12 +303,8 @@ const getWords = (params = []) => {
   });
 }
 
-watch(searchInput, () => {
-  let params = {
-    search: searchInput.value,
-  }
-
-  getWords(params)
+watch([searchInput, period], () => {
+  getWords()
 })
 
 //get initial data
