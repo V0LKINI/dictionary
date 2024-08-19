@@ -31,7 +31,7 @@ class ProfileController extends Controller
 
             return $this->success($response);
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error($e->getMessage(), $e->getCode());
         }
     }
 
