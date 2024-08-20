@@ -4,14 +4,15 @@ namespace App\Services;
 
 use App\Models\Translation;
 use App\Models\Word;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class DictionaryService
 {
-    public function getList(): Collection
+    public function getPaginator(): LengthAwarePaginator
     {
-        $query = Word::with('translations')->orderByDesc('created_at');
+        $query = Word::with('translations')->where('user_id', auth()->id());
 
         if ($search = request()->search) {
             $query->where('text', 'like', '%' . $search . '%');
@@ -21,9 +22,9 @@ class DictionaryService
             $query->where('created_at', '>=', now()->sub($period, 1));
         }
 
-        $data = $query->get();
+        $paginator = $query->orderByDesc('created_at')->paginate(15);
 
-        return $data;
+        return $paginator;
     }
 
     public function save(array $data): void
