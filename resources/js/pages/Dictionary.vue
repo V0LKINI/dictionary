@@ -1,6 +1,6 @@
 <template>
-    <div class="min-h-screen bg-gray-50 flex flex-col py-6 sm:px-6 lg:px-8 px-6">
-        <div class="flex flex-column flex-col-reverse sm:flex-row  flex-wrap  justify-between">
+    <div class="min-h-screen bg-gray-50 py-6 sm:px-6 lg:px-8 px-6">
+        <div class="flex flex-column flex-col-reverse sm:flex-row flex-wrap justify-between">
             <div class="flex flex-column sm:flex-row flex-wrap justify-start space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
               <input-dropdown v-model="period" :options="periodOptions"/>
               <input-search v-model="searchInput" label="Search" placeholder="Search for words"/>
@@ -36,47 +36,102 @@
               </div>
             </div>
         </div>
-        <div class="relative overflow-x-auto shadow-md rounded-lg">
+        <div v-if="loadData" class="sticky top-1/3">
+          <spinner/>
+        </div>
+        <div v-else-if="!loadData && words.length === 0" class="bg-white shadow-md rounded-lg">
+          <div class=" max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-24">
+            <div class="text-center">
+              <h2 class="text-3xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-4xl">
+                <p>You don't have any words yet. </p>
+                <p>To start using the dictionary, you need to follow a few steps:</p>
+              </h2>
+            </div>
+            <div class="max-w-3xl p-5 mx-auto mt-8 space-y-5 border border-gray-100 rounded-lg bg-gray-50">
+              <div class="border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  1: Press the "Add new translation" button at the top of the screen
+                </h3>
+              </div>
+            </div>
+            <div class="max-w-3xl p-5 mx-auto mt-8 space-y-5 border border-gray-100 rounded-lg bg-gray-50">
+              <div class="border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  2: Enter a word and its translation or use auto translation
+                </h3>
+              </div>
+            </div>
+            <div class="max-w-3xl p-5 mx-auto mt-8 space-y-5 border border-gray-100 rounded-lg bg-gray-50">
+              <div class="border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  3: Click the "Save" button
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="relative overflow-x-auto shadow-md rounded-lg">
+          <div>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 shadow-md">
-                <thead class="border-y text-xs text-gray-700 uppercase bg-gray-50">
-                  <tr class="hover:bg-gray-50">
-                      <th scope="col" class="px-6 py-3">
-                          Word
-                      </th>
-                      <th scope="col" class="px-6 py-3">
-                          Transcription
-                      </th>
-                      <th scope="col" class="px-6 py-3">
-                          Translation
-                      </th>
-                      <th scope="col" class="px-6 py-3">
-                          Date
-                      </th>
-                      <th scope="col" class="px-6 py-3">
-                          Action
-                      </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="word in words" class="bg-white border-b hover:bg-gray-50">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      {{ word.text }}
-                    </th>
-                    <td class="px-6 py-4">
-                      {{ word.transcription ?? '—' }}
-                    </td>
-                    <td class="px-6 py-4">
-                      {{ word.translations }}
-                    </td>
-                    <td class="px-6 py-4">
-                      {{ word.created_at }}
-                    </td>
-                    <td class="px-6 py-4">
-                      <a @click.prevent="deleteWord(word.id)" class="cursor-pointer font-medium text-blue-600 hover:underline">Delete</a>
-                    </td>
-                  </tr>
-                </tbody>
+              <thead class="border-y text-xs text-gray-700 uppercase bg-gray-50">
+              <tr class="hover:bg-gray-50">
+                <th scope="col" class="px-6 py-3">
+                  Word
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Transcription
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Translation
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Date
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Action
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="word in words" class="bg-white border-b hover:bg-gray-50">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  {{ word.text }}
+                </th>
+                <td class="px-6 py-4">
+                  {{ word.transcription ?? '—' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ word.translations }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ word.created_at }}
+                </td>
+                <td class="px-6 py-4">
+                  <a @click.prevent="deleteWord(word.id)" class="cursor-pointer font-medium text-blue-600 hover:underline">Delete</a>
+                </td>
+              </tr>
+              </tbody>
             </table>
+            <div class="flex-col px-4 py-7 w-full text-left">
+              <nav v-if="pagination && pagination.lastPage > 1">
+                <ul class="inline-flex -space-x-px">
+                  <li v-for="(link, index) of pagination.links">
+                    <a v-if="link.url" href="#"
+                       @click.prevent="entityPaginate(link.url)"
+                       :class="classInputPagination(index, link.active, pagination)"
+                       class="px-3 py-2 border border-gray-300">
+                      <span v-html="link.label"></span>
+                    </a>
+                    <a v-else
+                       :class="classInputPagination(index, link.active, pagination)"
+                       class="px-3 py-2 ml-0 leading-tight  bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                      <span v-html="link.label"></span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
     </div>
 
@@ -143,6 +198,7 @@ import DropFile from "../components/DropFile.vue";
 import ButtonDefault from "../components/ButtonDefault.vue";
 import ButtonCancel from "../components/ButtonCancel.vue";
 import Modal from "../components/Modal.vue";
+import Spinner from "../components/Spinner.vue";
 import {useAuthStore} from "../stores/AuthStore.js";
 import axios from "axios";
 import defaultProfileImage from "../../static/img/no-image-man.png";
@@ -150,6 +206,8 @@ import defaultProfileImage from "../../static/img/no-image-man.png";
 const showMenu = ref(false)
 const showProfileDialog = ref(false)
 const showAddDialog = ref(false)
+
+const loadData = ref(true);
 
 //Auth
 const authStore = useAuthStore();
@@ -161,6 +219,7 @@ const password = ref('')
 const passwordConfirm = ref('')
 
 //Words
+const pagination = ref(null);
 const words = ref([])
 const searchInput = ref('')
 
@@ -246,10 +305,6 @@ const closeWordDialog = () => {
     showAddDialog.value = false
 }
 
-const getTranslation = () => {
-
-}
-
 const saveWord = () => {
   axios.post('/api/dictionary/save', {
     text: text.value,
@@ -282,7 +337,9 @@ const deleteWord = (id) => {
   });
 }
 
-const getWords = () => {
+const getWords = (url = '/api/dictionary/list') => {
+  loadData.value = true
+
   let config = {
     params: {
       search: searchInput.value,
@@ -290,11 +347,14 @@ const getWords = () => {
     },
   }
 
-  axios.get('/api/dictionary/list', config).then((r) => {
+  axios.get(url, config).then((r) => {
+    loadData.value = false
+
     let response = r.data;
 
     if (response.success) {
-      words.value = response.data
+      words.value = response.data.items
+      pagination.value = response.data.pagination
     } else {
       error.value = response.error.message
     }
@@ -303,11 +363,25 @@ const getWords = () => {
   });
 }
 
+//get initial data
+getWords()
+
 watch([searchInput, period], () => {
   getWords()
 })
 
-//get initial data
-getWords()
+//Pagination
+const entityPaginate = (url) => {
+  if (url) {
+    getWords(url);
+  }
+}
 
+//Pagination styles
+const classInputPagination = (index, active, pagination) => ({
+  'rounded-l-lg': index === 0,
+  'rounded-r-lg': (index + 1) === pagination.links.length,
+  'text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700': active,
+  'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700': !active,
+});
 </script>
