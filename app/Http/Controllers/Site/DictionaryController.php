@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DictionaryRequest;
 use App\Http\Requests\TranslateRequest;
+use App\Http\Resources\PaginationResource;
 use App\Http\Resources\WordsListResource;
 use App\Services\CrawlerService;
 use App\Services\DictionaryService;
@@ -26,9 +27,12 @@ class DictionaryController extends Controller
     public function list(Request $request)
     {
         try {
-            $data = $this->dictionaryService->getList();
+            $paginator = $this->dictionaryService->getPaginator();
 
-            return $this->success(WordsListResource::collection($data));
+            return $this->success([
+                'items' => WordsListResource::collection($paginator->items()),
+                'pagination' => PaginationResource::make($paginator)
+            ]);
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
