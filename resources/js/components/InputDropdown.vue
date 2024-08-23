@@ -21,7 +21,14 @@
       <ul class="p-3 space-y-1 text-sm text-gray-700" aria-labelledby="dropdownRadioButton">
         <li v-for="option of options" @click="changeValue(option)">
           <div class="flex items-center p-2 rounded hover:bg-gray-100">
-            <input id="filter-radio-example-1" type="radio" :value="option.value" name="filter-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+            <input
+                id="filter-radio-example-1"
+                type="radio"
+                :value="option.value"
+                :checked="modelValue === option.value"
+                name="filter-radio"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+            >
             <label for="filter-radio-example-1" class="w-full ms-2 text-sm font-medium text-gray-900 rounded">{{ option.name }}</label>
           </div>
         </li>

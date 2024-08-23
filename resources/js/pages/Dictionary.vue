@@ -1,12 +1,12 @@
 <template>
-    <div class="min-h-screen bg-gray-50 py-6 sm:px-6 lg:px-8 px-6">
-        <div class="flex flex-column flex-col-reverse sm:flex-row flex-wrap justify-between">
-            <div class="flex flex-column sm:flex-row flex-wrap justify-start space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
+    <div class="flex flex-col h-screen bg-gray-50 py-4 sm:px-6 lg:px-8 px-6">
+        <div class="flex flex-col flex-col-reverse h-12 sm:flex-row flex-wrap justify-between mb-4">
+            <div class="flex flex-col sm:flex-row flex-wrap justify-start space-y-4 sm:space-y-0 items-center gap-x-2">
               <input-dropdown v-model="period" :options="periodOptions"/>
               <input-search v-model="searchInput" label="Search" placeholder="Search for words"/>
               <button-default @click.prevent="openWordDialog" text="Add new translation"/>
             </div>
-            <div class="flex flex-wrap justify-start sm:justify-end space-y-4 sm:space-y-0 items-center gap-x-2 mb-4">
+            <div class="flex flex-wrap justify-start sm:justify-end space-y-4 sm:space-y-0 items-center gap-x-2">
               <div @click="toggleProfile()" v-click-outside="() => toggleProfile(true)" class="flex items-center gap-4">
                 <img type="button"
                      data-dropdown-placement="bottom-start" class="w-10 h-10 rounded-full cursor-pointer object-cover"
@@ -39,12 +39,12 @@
         <div v-if="loadData" class="sticky top-1/3">
           <spinner/>
         </div>
-        <div v-else-if="!loadData && words.length === 0" class="bg-white shadow-md rounded-lg">
+        <div v-else-if="!loadData && words.length === 0" class="flex justify-center items-center flex-1 bg-white shadow-md rounded-lg">
           <div class=" max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-24">
             <div class="text-center">
               <h2 class="text-3xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-4xl">
-                <p>You don't have any words yet. </p>
-                <p>To start using the dictionary, you need to follow a few steps:</p>
+                <p>Sorry, we didn't find any words =( </p>
+                <p>To add new words, you need to follow a few steps:</p>
               </h2>
             </div>
             <div class="max-w-3xl p-5 mx-auto mt-8 space-y-5 border border-gray-100 rounded-lg bg-gray-50">
@@ -112,8 +112,8 @@
               </tr>
               </tbody>
             </table>
-            <div class="flex-col px-4 py-7 w-full text-left">
-              <nav v-if="pagination && pagination.lastPage > 1">
+            <div v-if="pagination && pagination.lastPage > 1" class="flex-col px-4 py-7 w-full text-left">
+              <nav>
                 <ul class="inline-flex -space-x-px">
                   <li v-for="(link, index) of pagination.links">
                     <a v-if="link.url" href="#"
@@ -161,7 +161,7 @@
         </div>
 
         <div class="flex items-center space-x-4">
-          <button-default @click.prevent="saveProfile" text="Save data"/>
+          <button-default @click.prevent="saveProfile" text="Save"/>
           <button-cancel @click.prevent="closeProfileDialog"/>
         </div>
       </form>

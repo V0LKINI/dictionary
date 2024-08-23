@@ -39,6 +39,10 @@ class Controller extends BaseController
             $response['data'] = $data;
         }
 
+        if ($status == 0 || !is_int($status)) {
+            $status = 500;
+        }
+
         return response()->json($response)->setStatusCode($status);
     }
 }
