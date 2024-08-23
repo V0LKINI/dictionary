@@ -3,7 +3,7 @@
         <div class="flex flex-col flex-col-reverse h-12 sm:flex-row flex-wrap justify-between mb-4">
             <div class="flex flex-col sm:flex-row flex-wrap justify-start space-y-4 sm:space-y-0 items-center gap-x-2">
               <input-dropdown v-model="period" :options="periodOptions"/>
-              <input-search v-model="searchInput" label="Search" placeholder="Search for words"/>
+              <input-search v-model.lazy="searchInput" label="Search" placeholder="Search for words"/>
               <button-default @click.prevent="openWordDialog" text="Add new translation"/>
             </div>
             <div class="flex flex-wrap justify-start sm:justify-end space-y-4 sm:space-y-0 items-center gap-x-2">
@@ -50,21 +50,21 @@
             <div class="max-w-3xl p-5 mx-auto mt-8 space-y-5 border border-gray-100 rounded-lg bg-gray-50">
               <div class="border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">
-                  1: Press the "Add new translation" button at the top of the screen
+                  1: Press "Add new translation" button at the top of the screen
                 </h3>
               </div>
             </div>
             <div class="max-w-3xl p-5 mx-auto mt-8 space-y-5 border border-gray-100 rounded-lg bg-gray-50">
               <div class="border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">
-                  2: Enter a word and its translation or use auto translation
+                  2: Enter a word and its translation or use an auto translation icon
                 </h3>
               </div>
             </div>
             <div class="max-w-3xl p-5 mx-auto mt-8 space-y-5 border border-gray-100 rounded-lg bg-gray-50">
               <div class="border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">
-                  3: Click the "Save" button
+                  3: Click "Save" button
                 </h3>
               </div>
             </div>
@@ -366,9 +366,19 @@ const getWords = (url = '/api/dictionary/list') => {
 //get initial data
 getWords()
 
+//Search and filter
+let timeoutActive = false;
+
 watch([searchInput, period], () => {
-  getWords()
-})
+    if (!timeoutActive) {
+        timeoutActive = true;
+
+        setTimeout(() => {
+            getWords();
+            timeoutActive = false;
+        }, 500);
+    }
+});
 
 //Pagination
 const entityPaginate = (url) => {
