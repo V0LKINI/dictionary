@@ -77,6 +77,25 @@
                   </tr>
                 </tbody>
             </table>
+            <div class="flex-col px-4 py-7 w-full text-left">
+              <nav v-if="pagination && pagination.lastPage > 1">
+                <ul class="inline-flex -space-x-px">
+                  <li v-for="(link, index) of pagination.links">
+                    <a v-if="link.url" href="#"
+                       @click.prevent="entityPaginate(link.url)"
+                       :class="classInputPagination(index, link.active, pagination)"
+                       class="px-3 py-2 border border-gray-300">
+                      <span v-html="link.label"></span>
+                    </a>
+                    <a v-else
+                       :class="classInputPagination(index, link.active, pagination)"
+                       class="px-3 py-2 ml-0 leading-tight  bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                      <span v-html="link.label"></span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
         </div>
     </div>
 
@@ -161,6 +180,7 @@ const password = ref('')
 const passwordConfirm = ref('')
 
 //Words
+const pagination = ref(null);
 const words = ref([])
 const searchInput = ref('')
 
@@ -246,10 +266,6 @@ const closeWordDialog = () => {
     showAddDialog.value = false
 }
 
-const getTranslation = () => {
-
-}
-
 const saveWord = () => {
   axios.post('/api/dictionary/save', {
     text: text.value,
@@ -282,7 +298,7 @@ const deleteWord = (id) => {
   });
 }
 
-const getWords = () => {
+const getWords = (url = '/api/dictionary/list') => {
   let config = {
     params: {
       search: searchInput.value,
@@ -290,11 +306,12 @@ const getWords = () => {
     },
   }
 
-  axios.get('/api/dictionary/list', config).then((r) => {
+  axios.get(url, config).then((r) => {
     let response = r.data;
 
     if (response.success) {
-      words.value = response.data
+      words.value = response.data.items
+      pagination.value = response.data.pagination
     } else {
       error.value = response.error.message
     }
@@ -303,11 +320,25 @@ const getWords = () => {
   });
 }
 
+//get initial data
+getWords()
+
 watch([searchInput, period], () => {
   getWords()
 })
 
-//get initial data
-getWords()
+//Pagination
+const entityPaginate = (url) => {
+  if (url) {
+    getWords(url);
+  }
+}
 
+//Pagination styles
+const classInputPagination = (index, active, pagination) => ({
+  'rounded-l-lg': index === 0,
+  'rounded-r-lg': (index + 1) === pagination.links.length,
+  'text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700': active,
+  'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700': !active,
+});
 </script>
