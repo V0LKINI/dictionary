@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login'])->middleware('guest')->name('auth.login');
 Route::post('register', [AuthController::class, 'register'])->middleware('guest')->name('auth.register');
+Route::post('reset-password', [AuthController::class, 'recovery'])->middleware('guest')->name('auth.recovery');
+Route::get('/reset-password/{token}', function (string $token) {
+    return 123;
+})->middleware('guest')->name('password.reset');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('profile')->name('profile.')->group(function () {

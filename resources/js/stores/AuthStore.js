@@ -71,6 +71,16 @@ export const useAuthStore = defineStore("authStore", () => {
         router.push({name: 'Login'}).then();
     }
 
+    const recovery = async (credentials) => {
+        error.value = null;
+
+        await axios.post('/api/reset-password', {
+            credentials: credentials,
+        }).catch((e) => {
+            error.value = e.response.data.error.message
+        });
+    }
+
     const clearAuthUser = () => {
         authUser.value = null;
 
@@ -84,6 +94,7 @@ export const useAuthStore = defineStore("authStore", () => {
         login,
         register,
         logout,
+        recovery,
         getProfile,
         clearAuthUser
     }

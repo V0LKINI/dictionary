@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RecoveryRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Services\AuthService;
@@ -50,6 +51,22 @@ class AuthController extends Controller
             ];
 
             return $this->success($response);
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * Recovery password
+     *
+     * @param Request $request
+     */
+    public function recovery(RecoveryRequest $request)
+    {
+        try {
+            $this->authService->recovery($request->validated());
+
+            return $this->success();
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }

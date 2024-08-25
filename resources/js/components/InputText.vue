@@ -19,6 +19,7 @@
                     transition duration-150 ease-in-out sm:text-sm sm:leading-5 border-gray-300 placeholder-gray-400
                     focus:outline-none focus:shadow-outline-blue focus:border-blue-300">
     </div>
+    <p v-if="hint && !isError()" class="mt-2 text-sm text-gray-500">{{ hint }}</p>
     <p v-if="isError()" class="mt-2 text-sm text-red-600">{{ v$.$errors[0].$message }}</p>
   </div>
 </template>
@@ -32,6 +33,7 @@ const props = defineProps({
     type: {type: String, default: 'text'},
     modelValue: {type: String, default: "" },
     autocomplete: {type: String, default: ''},
+    hint: {type: String, default: ''},
     v$: Object,
 });
 

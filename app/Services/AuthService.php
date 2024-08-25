@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class AuthService
 {
@@ -42,5 +43,16 @@ class AuthService
         $user->setAttribute('new_token', $token);
 
         return $user;
+    }
+
+    public function recovery(array $data): bool
+    {
+        $status = Password::sendResetLink(['email' => $data['credentials']]);
+
+        if ($status !== Password::RESET_LINK_SENT) {
+            throw new Exception(message: 'An error occurred while sending the message', code: 500);
+        }
+
+        return $status === Password::RESET_LINK_SENT;
     }
 }
