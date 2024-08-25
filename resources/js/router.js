@@ -4,7 +4,7 @@ import Dictionary from './pages/Dictionary.vue'
 import Login from './pages/Login.vue'
 import Register from './pages/Register.vue'
 import Recovery from './pages/Recovery.vue'
-import RecoverySent from './pages/RecoverySent.vue'
+import RecoveryConfirm from './pages/RecoveryConfirm.vue'
 
 const routes = [
     {
@@ -28,9 +28,9 @@ const routes = [
         component: Recovery,
     },
     {
-        path: '/recovery',
-        name: 'RecoverySent',
-        component: RecoverySent,
+        path: '/recovery-confirm',
+        name: 'RecoveryConfirm',
+        component: RecoveryConfirm,
     },
 ]
 
@@ -42,7 +42,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
 
-    const publicPages = ['Login', 'Register', 'Recovery', 'RecoverySent'];
+    const publicPages = ['Login', 'Register', 'Recovery', 'RecoveryConfirm'];
     const authRequired = !publicPages.includes(to.name);
 
     if (authRequired && !authStore.authUser) {

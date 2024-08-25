@@ -15,13 +15,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::post('login', [AuthController::class, 'login'])->middleware('guest')->name('auth.login');
-Route::post('register', [AuthController::class, 'register'])->middleware('guest')->name('auth.register');
-Route::post('reset-password', [AuthController::class, 'recovery'])->middleware('guest')->name('auth.recovery');
-Route::get('/reset-password/{token}', function (string $token) {
-    return 123;
-})->middleware('guest')->name('password.reset');
+Route::middleware('guest')->group(function () {
+    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+    Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
+    Route::post('/reset-password', [AuthController::class, 'recovery'])->name('password.recovery');
+    Route::post('/set-new-password', [AuthController::class, 'setNewPassword'])->name('password.setNewPassword');
+    Route::post('/reset-password/{token}', [AuthController::class, 'verifyToken'])->name('password.verifyToken');
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('profile')->name('profile.')->group(function () {

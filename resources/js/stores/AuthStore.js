@@ -7,6 +7,7 @@ import setHeaderAuth from "../utilits/setHeaderAuth.js";
 export const useAuthStore = defineStore("authStore", () => {
     const authUser = ref(JSON.parse(localStorage.getItem('authUser')));
     const error = ref(null);
+    const credentials = ref(null);
 
     const getProfile = async () => {
         return await axios.get('/user/profile');
@@ -81,6 +82,32 @@ export const useAuthStore = defineStore("authStore", () => {
         });
     }
 
+    const changePassword = async (credentials, password, passwordConfirm) => {
+        error.value = null;
+
+        await axios.post('/api/set-new-password', {
+            credentials: credentials,
+            password: password,
+            password_confirm: passwordConfirm,
+        }).catch((e) => {
+            error.value = e.response.data.error.message
+        });
+    }
+
+    const verifyToken = async (token) => {
+        error.value = null;
+
+        await axios.post('/api/reset-password/' + token).then((r) => {
+            let response = r.data;
+
+            if (response.success) {
+               credentials.value = response.data.email
+            }
+        }).catch((e) => {
+            error.value = e.response.data.error.message
+        });
+    }
+
     const clearAuthUser = () => {
         authUser.value = null;
 
@@ -91,10 +118,13 @@ export const useAuthStore = defineStore("authStore", () => {
     return {
         authUser,
         error,
+        credentials,
         login,
         register,
         logout,
         recovery,
+        changePassword,
+        verifyToken,
         getProfile,
         clearAuthUser
     }
