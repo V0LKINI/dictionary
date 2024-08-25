@@ -291,8 +291,6 @@ const saveProfile = () => {
     } else {
       error.value = response.error.message;
     }
-  }).catch((e) => {
-    console.log(e);
   });
 }
 
@@ -314,12 +312,12 @@ const saveWord = () => {
 
     if (response.success) {
       showAddDialog.value = false
+      translation.value = ''
+      text.value = ''
       getWords()
     } else {
       error.value = response.error.message
     }
-  }).catch((e) => {
-    console.log(e);
   });
 }
 
@@ -332,8 +330,6 @@ const deleteWord = (id) => {
     } else {
       error.value = response.error.message
     }
-  }).catch((e) => {
-    console.log(e);
   });
 }
 
@@ -358,8 +354,6 @@ const getWords = (url = '/api/dictionary/list') => {
     } else {
       error.value = response.error.message
     }
-  }).catch((e) => {
-    console.log(e);
   });
 }
 

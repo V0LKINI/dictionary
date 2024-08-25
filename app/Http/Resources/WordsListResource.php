@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class WordsListResource extends JsonResource
 {
@@ -17,9 +18,9 @@ class WordsListResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'text' => $this->text,
+            'text' => Str::ucfirst($this->text),
             'transcription' => $this->transcription,
-            'translations' => $this->translations->implode('text', ', '),
+            'translations' =>  Str::ucfirst($this->translations->implode('text', ', ')),
             'created_at' => Carbon::parse($this->created_at)->format('d F Y, H:i:m')
         ];
     }
