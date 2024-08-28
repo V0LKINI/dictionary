@@ -38,17 +38,6 @@ class DictionaryController extends Controller
         }
     }
 
-
-    /**
-     * Translate word
-     *
-     * @return void
-     */
-    public function translate()
-    {
-
-    }
-
     /**
      * Crawl word's info
      *
