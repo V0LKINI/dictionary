@@ -173,11 +173,15 @@
     <template #body>
       <form>
         <div class="flex flex-col">
-          <input-text v-model="text" label="Word or phrase"/>
+          <input-text v-model="entry.text" label="Word or phrase"/>
         </div>
 
         <div class="flex flex-col">
-          <input-text v-model="translation" label="Translation"/>
+          <input-text v-model="entry.transcription" label="Transcription"/>
+        </div>
+
+        <div class="flex flex-col">
+          <input-text v-model="entry.translation" label="Translation"/>
         </div>
 
         <div class="flex items-center space-x-4">
@@ -234,8 +238,11 @@ const periodOptions = ref([
 ]);
 
 //Word adding form
-const text = ref('')
-const translation = ref('')
+const entry = ref({
+    'text': '',
+    'transcription': '',
+    'translation': '',
+})
 
 const toggleProfile = (clickOutside = false) => {
   if (clickOutside) {
@@ -295,6 +302,12 @@ const saveProfile = () => {
 }
 
 //Word dialog
+const resetEntry = () => {
+    entry.value.text = ''
+    entry.value.transcription = ''
+    entry.value.translation = ''
+}
+
 const openWordDialog = () => {
     showAddDialog.value = true
 }
@@ -304,16 +317,12 @@ const closeWordDialog = () => {
 }
 
 const saveWord = () => {
-  axios.post('/api/dictionary/save', {
-    text: text.value,
-    translation: translation.value,
-  }).then((r) => {
+  axios.post('/api/dictionary/save', entry.value).then((r) => {
     let response = r.data;
 
     if (response.success) {
       showAddDialog.value = false
-      translation.value = ''
-      text.value = ''
+      resetEntry()
       getWords()
     } else {
       error.value = response.error.message

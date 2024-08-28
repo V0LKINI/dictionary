@@ -34,9 +34,16 @@ class DictionaryService
         }
 
         DB::transaction(function () use ($data) {
-            $word = Word::create(['user_id' => auth()->id(), 'text' => $data['text']]);
+            $word = Word::create([
+                'user_id' => auth()->id(),
+                'text' => $data['text'],
+                'transcription' => $data['transcription']
+            ]);
 
-            Translation::create(['word_id' => $word->id, 'text' => $data['translation']]);
+            Translation::create([
+                'word_id' => $word->id,
+                'text' => $data['translation']
+            ]);
         });
     }
 
