@@ -3,6 +3,8 @@ import {useAuthStore} from "./stores/AuthStore.js";
 import Dictionary from './pages/Dictionary.vue'
 import Login from './pages/Login.vue'
 import Register from './pages/Register.vue'
+import Recovery from './pages/Recovery.vue'
+import RecoveryConfirm from './pages/RecoveryConfirm.vue'
 
 const routes = [
     {
@@ -20,6 +22,16 @@ const routes = [
         name: 'Register',
         component: Register,
     },
+    {
+        path: '/recovery',
+        name: 'Recovery',
+        component: Recovery,
+    },
+    {
+        path: '/recovery-confirm',
+        name: 'RecoveryConfirm',
+        component: RecoveryConfirm,
+    },
 ]
 
 const router = createRouter({
@@ -30,7 +42,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
 
-    const publicPages = ['Login', 'Register'];
+    const publicPages = ['Login', 'Register', 'Recovery', 'RecoveryConfirm'];
     const authRequired = !publicPages.includes(to.name);
 
     if (authRequired && !authStore.authUser) {

@@ -19,7 +19,7 @@
                     <div class="mt-6 flex items-center justify-between">
                         <input-checkbox label="Remember me"/>
                         <div class="text-sm leading-5">
-                            <link-default text="Forgot your password?" href="#"/>
+                            <link-router text="Forgot your password?" route="Recovery"/>
                         </div>
                     </div>
 

@@ -2,9 +2,14 @@
 
 namespace App\Services;
 
+use App\Mail\PasswordRecoveryEmail;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthService
 {
@@ -42,5 +47,48 @@ class AuthService
         $user->setAttribute('new_token', $token);
 
         return $user;
+    }
+
+    public function recovery(array $data): void
+    {
+        $email = $data['credentials'];
+
+        $token = Str::random(64);
+
+        DB::table('password_reset_tokens')->upsert([
+            'email' => $email,
+            'token' => $token,
+            'created_at' => Carbon::now()
+        ], ['email']);
+
+        $link = url('/recovery-confirm?token='.$token);
+
+        Mail::to($email)->send(new PasswordRecoveryEmail($link));
+    }
+
+    public function verifyToken(string $token): string
+    {
+        $entry = DB::table('password_reset_tokens')->where('token', $token)->first();
+
+        if (!$entry) {
+            throw new Exception(message: 'Invalid token', code: 400);
+        }
+
+        if (Carbon::parse($entry->created_at)->addHour() < Carbon::now()) {
+            throw new Exception(message: 'Token has been expired', code: 400);
+        }
+
+        $email = $entry->email;
+
+        DB::table('password_reset_tokens')->where('token', $token)->delete();
+
+        return $email;
+    }
+
+    public function setNewPassword(array $data): void
+    {
+        $user = User::where('email', $data['credentials'])->firstOrFail();
+
+        $user->update(['password' => Hash::make($data['password'])]);
     }
 }
