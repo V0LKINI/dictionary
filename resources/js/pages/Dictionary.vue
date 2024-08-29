@@ -295,6 +295,7 @@ const saveProfile = () => {
       user.value = response.data.user;
       setUserFields();
       localStorage.setItem('authUser', JSON.stringify(response.data.user));
+      closeProfileDialog();
     } else {
       error.value = response.error.message;
     }
