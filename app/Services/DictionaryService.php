@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Translation;
 use App\Models\Word;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class DictionaryService
@@ -15,7 +14,12 @@ class DictionaryService
         $query = Word::with('translations')->where('user_id', auth()->id());
 
         if ($search = request()->search) {
-            $query->where('text', 'like', '%' . $search . '%');
+            $query->where(function ($q) use ($search) {
+                $q->where('text', 'like', '%' . $search . '%')
+                  ->orWhereHas('translations', function ($q) use ($search) {
+                      $q->where('text', 'like', '%' . $search . '%');
+                  });
+            });
         }
 
         if ($period = request()->period) {
