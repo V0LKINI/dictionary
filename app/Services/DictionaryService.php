@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Translation;
 use App\Models\Word;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -54,13 +55,15 @@ class DictionaryService
 
     public function edit(array $data): void
     {
-        //TODO Add permission checking
+        $word = Word::findOrFail($data['id']);
 
-        DB::transaction(function () use ($data) {
-            $word = Word::findOrFail($data['id']);
+        $translation = Translation::where('word_id', $data['id'])->firstOrFail();
 
-            $translation = Translation::where('word_id', $data['id'])->firstOrFail();
+        if (auth()->user()->cannot('edit', $word)) {
+            throw new Exception( 'Access denied', 403);
+        }
 
+        DB::transaction(function () use ($data, $word, $translation) {
             $word->update([
                 'user_id' => auth()->id(),
                 'text' => $data['text'],
@@ -76,8 +79,12 @@ class DictionaryService
 
     public function delete(int $id): void
     {
-        //TODO Add permission checking
         $item = Word::findOrFail($id);
+
+        if (auth()->user()->cannot('delete', $item)) {
+            throw new Exception( 'Access denied', 403);
+        }
+
         $item->delete();
     }
 

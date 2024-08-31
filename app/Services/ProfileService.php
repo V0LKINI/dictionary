@@ -14,6 +14,10 @@ class ProfileService
     {
         $user = User::findOrFail($data['id']);
 
+        if (auth()->user()->cannot('edit', $user)) {
+            throw new Exception('Access denied', 403);
+        }
+
         if (is_null($data['password'])) {
             unset($data['password']);
         } else {
