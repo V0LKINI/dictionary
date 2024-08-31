@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DictionaryRequest;
 use App\Http\Requests\TranslateRequest;
 use App\Http\Resources\PaginationResource;
+use App\Http\Resources\WordResource;
 use App\Http\Resources\WordsListResource;
 use App\Services\CrawlerService;
 use App\Services\DictionaryService;
@@ -39,6 +40,22 @@ class DictionaryController extends Controller
     }
 
     /**
+     * Get word data by id
+     *
+     * @return JsonResponse|true[]
+     */
+    public function show(Request $request, int $id)
+    {
+        try {
+            $item = $this->dictionaryService->getById(id: $id);
+
+            return $this->success(WordResource::make($item));
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
      * Crawl word's info
      *
      * @param Request $request
@@ -66,7 +83,11 @@ class DictionaryController extends Controller
         try {
             $data = $request->validated();
 
-            $this->dictionaryService->save(data: $data);
+            if (isset($data['id'])) {
+                $this->dictionaryService->edit(data: $data);
+            } else {
+                $this->dictionaryService->save(data: $data);
+            }
 
             return $this->success();
         } catch (\Exception $e) {

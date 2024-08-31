@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/save', [DictionaryController::class, 'save'])->name('save');
         Route::get('/translate', [DictionaryController::class, 'translate'])->name('translate');
         Route::get('/crawl', [DictionaryController::class, 'crawl'])->name('crawl');
+        Route::get('/{id}', [DictionaryController::class, 'show'])->name('show');
         Route::delete('/{id}', [DictionaryController::class, 'delete'])->name('delete');
     });
 });

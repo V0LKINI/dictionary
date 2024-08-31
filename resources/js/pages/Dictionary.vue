@@ -106,12 +106,17 @@
                 <td class="px-6 py-4">
                   {{ word.created_at }}
                 </td>
-                <td class="px-6 py-4">
-                  <a @click.prevent="deleteWord(word.id)" class="cursor-pointer font-medium text-blue-600 hover:underline">
+                <td class="px-6 py-3 flex">
+                    <div @click.prevent="showWord(word.id)" class="p-1 cursor-pointer text-blue-600 rounded hover:bg-gray-200">
+                      <svg class="w-6 h-6 text-blue-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"/>
+                      </svg>
+                    </div>
+                    <div @click.prevent="deleteWord(word.id)" class="p-1 cursor-pointer text-blue-600 rounded hover:bg-gray-200">
                       <svg class="w-6 h-6 text-red-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                       </svg>
-                  </a>
+                  </div>
                 </td>
               </tr>
               </tbody>
@@ -173,7 +178,7 @@
   </modal>
 
   <modal v-if="showAddDialog" @closeDialog="closeWordDialog">
-    <template #title>Add new translation</template>
+    <template #title>{{ entry && entry.id ? 'Edit translation' : 'Add new translation' }}</template>
     <template #body>
       <form>
         <div class="flex flex-col">
@@ -243,6 +248,7 @@ const periodOptions = ref([
 
 //Word adding form
 const entry = ref({
+    'id': null,
     'text': '',
     'transcription': '',
     'translation': '',
@@ -308,17 +314,26 @@ const saveProfile = () => {
 
 //Word dialog
 const resetEntry = () => {
-    entry.value.text = ''
-    entry.value.transcription = ''
-    entry.value.translation = ''
+  entry.value.id = ''
+  entry.value.text = ''
+  entry.value.transcription = ''
+  entry.value.translation = ''
+}
+
+const setEntry = (data) => {
+  entry.value.id = data.id
+  entry.value.text = data.text
+  entry.value.transcription = data.transcription
+  entry.value.translation = data.translation
 }
 
 const openWordDialog = () => {
-    showAddDialog.value = true
+  showAddDialog.value = true
 }
 
 const closeWordDialog = () => {
-    showAddDialog.value = false
+  showAddDialog.value = false
+  resetEntry()
 }
 
 const saveWord = () => {
@@ -341,6 +356,19 @@ const deleteWord = (id) => {
 
     if (response.success) {
       getWords()
+    } else {
+      error.value = response.error.message
+    }
+  });
+}
+
+const showWord = (id) => {
+  axios.get('/api/dictionary/' + id).then((r) => {
+    let response = r.data;
+
+    if (response.success) {
+      setEntry(response.data)
+      openWordDialog()
     } else {
       error.value = response.error.message
     }

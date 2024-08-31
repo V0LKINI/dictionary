@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Translation;
 use App\Models\Word;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
@@ -51,9 +52,45 @@ class DictionaryService
         });
     }
 
+    public function edit(array $data): void
+    {
+        //TODO Add permission checking
+
+        DB::transaction(function () use ($data) {
+            $word = Word::findOrFail($data['id']);
+
+            $translation = Translation::where('word_id', $data['id'])->firstOrFail();
+
+            $word->update([
+                'user_id' => auth()->id(),
+                'text' => $data['text'],
+                'transcription' => $data['transcription']
+            ]);
+
+            $translation->update([
+                'word_id' => $word->id,
+                'text' => $data['translation']
+            ]);
+        });
+    }
+
     public function delete(int $id): void
     {
+        //TODO Add permission checking
         $item = Word::findOrFail($id);
         $item->delete();
+    }
+
+    public function getById(int $id): Model
+    {
+        $item = Word::query()
+            ->with(['translations' => function ($q) {
+                $q->select('word_id', 'text');
+            }])
+            ->where('user_id', auth()->id())
+            ->select('id', 'text', 'transcription')
+            ->findOrFail($id);
+
+        return $item;
     }
 }
