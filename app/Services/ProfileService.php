@@ -24,7 +24,12 @@ class ProfileService
             $data['password'] = Hash::make($data['password']);
         }
 
-        $user->image = $image;
+        if ($image) {
+            $user->image = $image;
+        } else if (is_null($data['image'])) {
+            $user->image = '';
+        }
+
         $user->fill($data);
         $user->save();
 
