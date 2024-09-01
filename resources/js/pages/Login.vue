@@ -13,8 +13,8 @@
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                 <form>
-                    <input-text v-model="credentials" :v$="v$.credentials" label="Email"/>
-                    <input-text v-model="password" :v$="v$.password" label="Password" type="password"/>
+                    <input-text v-model="credentials" :v$="v$.credentials" :server-error="serverErrors.credentials" label="Email"/>
+                    <input-text v-model="password" :v$="v$.password" :server-error="serverErrors.password" label="Password" type="password"/>
 
                     <div class="mt-6 flex items-center justify-between">
                         <input-checkbox label="Remember me"/>
@@ -46,6 +46,11 @@ const authStore = useAuthStore();
 const credentials = ref('');
 const password = ref('');
 
+const serverErrors = ref({
+    'credentials': '',
+    'password': '',
+});
+
 //Validation
 const rules = computed(() => ({
   credentials: {required, email},
@@ -60,6 +65,9 @@ let state = reactive({
 watch([credentials, password], () => {
   state.credentials = credentials;
   state.password = password;
+
+  serverErrors.value.credentials = ''
+  serverErrors.value.password = ''
 });
 
 const v$ = useVuelidate(rules, state)
@@ -70,23 +78,13 @@ const login = async () => {
     if (result) {
         authStore.login(credentials.value, password.value).then(() => {
             if (authStore.error) {
-                let error = JSON.parse(authStore.error);
+                if (authStore.error.email) {
+                    serverErrors.value.credentials = authStore.error.email[0]
+                }
 
-                //TODO
-                // if (error.email) {
-                //     v$.value.$error = true
-                //     v$.value.$errors = [{
-                //         $property: "credentials",
-                //         $message: error.email[0]
-                //     }]
-                // }
-                // if (error.password) {
-                //     v$.value.$error = true
-                //     v$.value.$errors = [{
-                //         $property: "password",
-                //         $message: error.password[0]
-                //     }]
-                // }
+                if (authStore.error.password) {
+                    serverErrors.value.password = authStore.error.password[0]
+                }
             }
         });
     }

@@ -78,7 +78,7 @@ export const useAuthStore = defineStore("authStore", () => {
         await axios.post('/api/reset-password', {
             credentials: credentials,
         }).catch((e) => {
-            error.value = e.response.data.error.message
+            error.value = e.response.data.errors
         });
     }
 

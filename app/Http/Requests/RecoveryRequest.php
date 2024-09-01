@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class RecoveryRequest extends FormRequest
 {
     public function rules(): array
@@ -13,8 +11,10 @@ class RecoveryRequest extends FormRequest
         ];
     }
 
-    public function authorize(): bool
+    public function messages()
     {
-        return true;
+        return [
+            'credentials.exists' => 'User not found',
+        ];
     }
 }

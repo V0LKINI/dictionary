@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class RecoverySetRequest extends FormRequest
 {
     public function rules(): array
@@ -13,10 +11,5 @@ class RecoverySetRequest extends FormRequest
             'password' => ['required', 'string', 'min:6'],
             'password_confirm' => ['required', 'string', 'min:6', 'same:password'],
         ];
-    }
-
-    public function authorize(): bool
-    {
-        return true;
     }
 }

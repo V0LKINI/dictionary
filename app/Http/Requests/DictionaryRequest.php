@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class DictionaryRequest extends FormRequest
 {
     public function rules(): array
@@ -14,10 +12,5 @@ class DictionaryRequest extends FormRequest
             'transcription' => ['nullable', 'string', 'max:255'],
             'translation' => ['required', 'string', 'max:255'],
         ];
-    }
-
-    public function authorize(): bool
-    {
-        return true;
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class ProfileRequest extends FormRequest
 {
     public function rules(): array
@@ -15,10 +13,5 @@ class ProfileRequest extends FormRequest
             'password' => ['nullable', 'string', 'min:6'],
             'password_confirm' => ['nullable', 'required_with:password', 'string', 'min:6', 'same:password'],
         ];
-    }
-
-    public function authorize(): bool
-    {
-        return true;
     }
 }

@@ -20,7 +20,7 @@
                     focus:outline-none focus:shadow-outline-blue focus:border-blue-300">
     </div>
     <p v-if="hint && !isError()" class="mt-2 text-sm text-gray-500">{{ hint }}</p>
-    <p v-if="isError()" class="mt-2 text-sm text-red-600">{{ v$.$errors[0].$message }}</p>
+    <p v-if="isError()" class="mt-2 text-sm text-red-600">{{ serverError !== '' ? serverError : v$.$errors[0].$message }}</p>
   </div>
 </template>
 
@@ -35,9 +35,10 @@ const props = defineProps({
     autocomplete: {type: String, default: ''},
     hint: {type: String, default: ''},
     v$: Object,
+    serverError: Object,
 });
 
-const {v$} = toRefs(props);
+const {v$, serverError} = toRefs(props);
 
 function validate() {
   if (v$.value !== undefined) {
@@ -46,6 +47,6 @@ function validate() {
 }
 
 const isError = () => {
-  return v$.value !== undefined && v$.value.$error;
+  return v$.value !== undefined && v$.value.$error || serverError.value !== '';
 }
 </script>

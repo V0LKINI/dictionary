@@ -15,6 +15,7 @@
                     <input-text
                         v-model="credentials" hint="Enter your email address to send the recovery link"
                         :v$="v$.credentials"
+                        :server-error="serverErrors.credentials"
                         label="Email"
                     />
                     <button-default @click="recovery" text="Send email"/>
@@ -53,6 +54,10 @@ const authStore = useAuthStore();
 const credentials = ref('');
 const isSent = ref(false)
 
+const serverErrors = ref({
+    'credentials': '',
+});
+
 //Validation
 const rules = computed(() => ({
   credentials: {required, email},
@@ -64,6 +69,8 @@ let state = reactive({
 
 watch([credentials], () => {
   state.credentials = credentials;
+
+  serverErrors.value.credentials = ''
 });
 
 const v$ = useVuelidate(rules, state)
@@ -75,6 +82,12 @@ const recovery = async () => {
         authStore.recovery(credentials.value).then(() => {
             if (!authStore.error) {
                 isSent.value = true
+            } else {
+                let error = authStore.error;
+
+                if (error.credentials) {
+                    serverErrors.value.credentials = error.credentials[0]
+                }
             }
         });
     }
