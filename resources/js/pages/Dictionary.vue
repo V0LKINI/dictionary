@@ -182,7 +182,7 @@
     <template #body>
       <form>
         <div class="flex flex-col">
-          <input-text v-model="entry.text" label="Word or phrase"/>
+          <input-text :v$="v$.text" v-model="entry.text" label="Word or phrase"/>
         </div>
 
         <div class="flex flex-col">
@@ -190,7 +190,7 @@
         </div>
 
         <div class="flex flex-col">
-          <input-text v-model="entry.translation" label="Translation"/>
+          <input-text :v$="v$.translation" v-model="entry.translation" label="Translation"/>
         </div>
 
         <div class="flex items-center space-x-4">
@@ -203,7 +203,7 @@
 </template>
 
 <script setup>
-import {ref, watch} from "vue";
+import {computed, reactive, ref, watch} from "vue";
 import InputSearch from "../components/InputSearch.vue";
 import InputDropdown from "../components/InputDropdown.vue";
 import InputText from "../components/InputText.vue";
@@ -215,6 +215,8 @@ import Spinner from "../components/Spinner.vue";
 import {useAuthStore} from "../stores/AuthStore.js";
 import axios from "axios";
 import defaultProfileImage from "../../static/img/no-image-man.png";
+import {required} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
 
 const showMenu = ref(false)
 const showProfileDialog = ref(false)
@@ -261,6 +263,24 @@ const toggleProfile = (clickOutside = false) => {
     showMenu.value = !showMenu.value;
   }
 }
+
+//Word validation
+const rules = computed(() => ({
+  text: {required},
+  translation: {required},
+}));
+
+let state = reactive({
+  text: "",
+  translation: "",
+});
+
+watch(entry.value, () => {
+  state.text = entry.value.text;
+  state.translation = entry.value.translation;
+});
+
+const v$ = useVuelidate(rules, state)
 
 //Profile dialog
 const openProfileDialog = () => {
@@ -336,18 +356,22 @@ const closeWordDialog = () => {
   resetEntry()
 }
 
-const saveWord = () => {
-  axios.post('/api/dictionary/save', entry.value).then((r) => {
-    let response = r.data;
+const saveWord = async () => {
+  const result = await v$.value.$validate()
 
-    if (response.success) {
-      showAddDialog.value = false
-      resetEntry()
-      getWords()
-    } else {
-      error.value = response.error.message
-    }
-  });
+  if (result) {
+    axios.post('/api/dictionary/save', entry.value).then((r) => {
+      let response = r.data;
+
+      if (response.success) {
+        showAddDialog.value = false
+        resetEntry()
+        getWords()
+      } else {
+        error.value = response.error.message
+      }
+    });
+  }
 }
 
 const deleteWord = (id) => {
