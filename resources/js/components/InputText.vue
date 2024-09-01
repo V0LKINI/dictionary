@@ -47,6 +47,6 @@ function validate() {
 }
 
 const isError = () => {
-  return v$.value !== undefined && v$.value.$error || serverError.value !== '';
+  return v$.value !== undefined && v$.value.$error || serverError.value !== undefined && serverError.value !== '';
 }
 </script>

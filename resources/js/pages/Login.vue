@@ -4,9 +4,9 @@
             <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
                 Sign in to your account
             </h2>
-            <p class="mt-2 text-center text-sm leading-5 text-blue-500 max-w">
-                Or
-                <link-router text="create a new one" route="Register"/>
+            <p class="mt-2 text-center text-sm text-gray-500 max-w">
+                Not registered?
+                <link-router text="Create an account." route="Register"/>
             </p>
         </div>
 
