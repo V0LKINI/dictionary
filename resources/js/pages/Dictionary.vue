@@ -75,17 +75,49 @@
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 shadow-md">
               <thead class="border-y text-xs text-gray-700 uppercase bg-gray-50">
               <tr class="hover:bg-gray-50">
-                <th scope="col" class="px-6 py-3">
-                  Word
+                <th @click="changeSort('word')" scope="col" class="cursor-pointer px-6 py-3">
+                  <div class="flex gap-1">
+                    Word
+                    <svg v-if="sortBy.word === 'ASC'"  class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4"/>
+                    </svg>
+                    <svg v-else-if="sortBy.word === 'DESC'" class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+                    </svg>
+                  </div>
                 </th>
-                <th scope="col" class="px-6 py-3">
-                  Transcription
+                <th @click="changeSort('transcription')" scope="col" class="cursor-pointer px-6 py-3">
+                  <div class="flex gap-1">
+                    Transcription
+                    <svg v-if="sortBy.transcription === 'ASC'"  class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4"/>
+                    </svg>
+                    <svg v-else-if="sortBy.transcription === 'DESC'" class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+                    </svg>
+                  </div>
                 </th>
-                <th scope="col" class="px-6 py-3">
-                  Translation
+                <th @click="changeSort('translation')" scope="col" class="cursor-pointer px-6 py-3">
+                  <div class="flex gap-1">
+                    Translation
+                    <svg v-if="sortBy.translation === 'ASC'" class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4"/>
+                    </svg>
+                    <svg v-else-if="sortBy.translation === 'DESC'" class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+                    </svg>
+                  </div>
                 </th>
-                <th scope="col" class="px-6 py-3">
-                  Date
+                <th @click="changeSort('date')" scope="col" class="cursor-pointer px-6 py-3">
+                  <div class="flex gap-1">
+                    Date
+                    <svg v-if="sortBy.date === 'ASC'"  class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4"/>
+                    </svg>
+                    <svg v-else-if="sortBy.date === 'DESC'" class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+                    </svg>
+                  </div>
                 </th>
                 <th scope="col" class="px-6 py-3">
                   Actions
@@ -282,6 +314,32 @@ watch(entry.value, () => {
 
 const v$ = useVuelidate(rules, state)
 
+//Words sort
+
+const sortBy = reactive({
+  word: "",
+  transcription: "",
+  translation: "",
+  date: "ASC",
+});
+
+const changeSort = (field) => {
+  let current = sortBy[field]
+
+  sortBy.word = ''
+  sortBy.transcription = ''
+  sortBy.translation = ''
+  sortBy.date = ''
+
+  if (current === 'ASC') {
+    sortBy[field] = 'DESC'
+  } else {
+    sortBy[field] = 'ASC'
+  }
+
+  getWords()
+}
+
 //Profile dialog
 const openProfileDialog = () => {
   showProfileDialog.value = true;
@@ -402,10 +460,22 @@ const showWord = (id) => {
 const getWords = (url = '/api/dictionary/list') => {
   loadData.value = true
 
+  let sortColumn, sortDirection = null;
+
+  for (const key in sortBy) {
+    if (sortBy[key] === "ASC" || sortBy[key] === "DESC") {
+      sortColumn = key;
+      sortDirection = sortBy[key];
+      break;
+    }
+  }
+
   let config = {
     params: {
       search: searchInput.value,
       period: period.value,
+      sortColumn: sortColumn,
+      sortDirection: sortDirection,
     },
   }
 

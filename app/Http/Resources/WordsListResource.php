@@ -20,7 +20,7 @@ class WordsListResource extends JsonResource
             'id' => $this->id,
             'text' => Str::ucfirst($this->text),
             'transcription' => $this->transcription,
-            'translations' =>  Str::ucfirst($this->translations->implode('text', ', ')),
+            'translations' =>  Str::ucfirst($this->translation),
             'created_at' => Carbon::parse($this->created_at)->format('d F Y, H:i:m')
         ];
     }

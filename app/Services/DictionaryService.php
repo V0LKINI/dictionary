@@ -13,14 +13,14 @@ class DictionaryService
 {
     public function getPaginator(): LengthAwarePaginator
     {
-        $query = Word::with('translations')->where('user_id', auth()->id());
+        $query = Word::query()
+            ->join('translations', 'words.id', '=', 'translations.word_id')
+            ->where('user_id', auth()->id());
 
         if ($search = request()->search) {
             $query->where(function ($q) use ($search) {
                 $q->where('text', 'like', '%' . $search . '%')
-                  ->orWhereHas('translations', function ($q) use ($search) {
-                      $q->where('text', 'like', '%' . $search . '%');
-                  });
+                  ->orWhere('translations.text', 'like', '%' . $search . '%');
             });
         }
 
@@ -28,7 +28,21 @@ class DictionaryService
             $query->where('created_at', '>=', now()->sub($period, 1));
         }
 
-        $paginator = $query->orderByDesc('created_at')->paginate(15);
+        if (request()->sortColumn) {
+            $sortColumn = match (request()->sortColumn) {
+                'word' => 'text',
+                'transcription' => 'transcription',
+                'translation' => 'translations.text',
+                'date' => 'created_at',
+                default => 'created_at',
+            };
+
+            $query->orderBy($sortColumn, request()->sortDirection);
+        }
+
+        $paginator = $query
+            ->select('words.id', 'words.text', 'words.transcription', 'translations.text as translation', 'words.created_at')
+            ->paginate(15);
 
         return $paginator;
     }
