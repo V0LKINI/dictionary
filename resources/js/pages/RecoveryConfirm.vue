@@ -1,15 +1,13 @@
 <template>
-    <div  class="min-h-screen flex flex-col justify-center">
+    <div class="page">
         <div v-if="!isLoaded">
             <spinner/>
         </div>
 
         <div v-else-if="isLoaded && isTokenCorrect && credentials && !isChanged">
-            <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-                <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                    <h2 class="text-center text-3xl leading-9 font-extrabold text-gray-900">
-                        Enter new password
-                    </h2>
+            <div class="container">
+                <div class="form">
+                    <h2 class="h2">Enter new password</h2>
                     <form>
                         <input-text v-model="password" :v$="v$.password" label="Password" type="password"/>
                         <input-text v-model="passwordConfirm" :v$="v$.passwordConfirm" label="Password confirm" type="password"/>
@@ -20,18 +18,10 @@
             </div>
         </div>
 
-        <div v-else class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">
-            <div class="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-                    Success
-                </h2>
-                <p class="mt-2 text-center text-sm leading-5 text-blue-500 max-w">
-                    Your password has been successfully changed
-                </p>
-                <p class="mt-2 text-center text-sm leading-5 text-blue-500 max-w">
-                    <link-router text="Back to login" route="Login"/>
-                </p>
-            </div>
+        <div class="container">
+            <h2 class="h2">Success</h2>
+            <p class="text-small">Your password has been successfully changed</p>
+            <p class="text-small"><link-router text="Back to login" route="Login"/></p>
         </div>
     </div>
 </template>

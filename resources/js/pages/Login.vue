@@ -1,28 +1,18 @@
 <template>
-    <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">
-        <div class="sm:mx-auto sm:w-full sm:max-w-md">
-            <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-                Sign in to your account
-            </h2>
-            <p class="mt-2 text-center text-sm text-gray-500 max-w">
-                Not registered?
-                <link-router text="Create an account." route="Register"/>
-            </p>
+    <div class="page">
+        <div class="container">
+            <h2 class="h2">Sign in to your account</h2>
+            <p class="text-small">Not registered? <link-router text="Create an account." route="Register"/></p>
         </div>
-
-        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-            <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div class="container">
+            <div class="form">
                 <form>
                     <input-text v-model="credentials" :v$="v$.credentials" :server-error="serverErrors.credentials" label="Email"/>
                     <input-text v-model="password" :v$="v$.password" :server-error="serverErrors.password" label="Password" type="password"/>
-
-                    <div class="mt-6 flex items-center justify-between">
+                    <div class="form__bottom">
                         <input-checkbox label="Remember me"/>
-                        <div class="text-sm leading-5">
-                            <link-router text="Forgot your password?" route="Recovery"/>
-                        </div>
+                        <div class="form__bottom-link"><link-router text="Forgot your password?" route="Recovery"/></div>
                     </div>
-
                     <button-default @click="login" text="Sign In"/>
                 </form>
             </div>
