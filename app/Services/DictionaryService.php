@@ -19,13 +19,13 @@ class DictionaryService
 
         if ($search = request()->search) {
             $query->where(function ($q) use ($search) {
-                $q->where('text', 'like', '%' . $search . '%')
+                $q->where('words.text', 'like', '%' . $search . '%')
                   ->orWhere('translations.text', 'like', '%' . $search . '%');
             });
         }
 
         if ($period = request()->period) {
-            $query->where('created_at', '>=', now()->sub($period, 1));
+            $query->where('words.created_at', '>=', now()->sub($period, 1));
         }
 
         if (request()->sortColumn) {
