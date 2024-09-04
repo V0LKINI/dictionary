@@ -424,6 +424,9 @@ const saveWord = async () => {
 
       if (response.success) {
         showAddDialog.value = false
+
+        v$.value.$reset()
+
         resetEntry()
         getWords()
       } else {
