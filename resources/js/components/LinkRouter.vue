@@ -1,8 +1,5 @@
 <template>
-    <router-link :to="{name: route, params: params}"
-                 class="link-router">
-        {{ text }}
-    </router-link>
+    <router-link :to="{name: route, params: params}" class="link-router">{{ text }}</router-link>
 </template>
 
 <script setup>

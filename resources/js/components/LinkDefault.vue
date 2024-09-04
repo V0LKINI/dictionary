@@ -1,7 +1,5 @@
 <template>
-    <a class="link-default" :href="href">
-        {{ text }}
-    </a>
+    <a class="link-default" :href="href">{{ text }}</a>
 </template>
 
 <script setup>
