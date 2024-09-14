@@ -1,0 +1,21 @@
+.pagination
+  @apply flex-col px-4 py-7 w-full text-left
+
+  &__list
+    @apply inline-flex -space-x-px
+
+    &-item
+      .default
+        @apply px-3 py-2 border border-gray-300 text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 cursor-pointer
+
+      .first
+        @apply rounded-l-lg
+
+      .last
+        @apply rounded-r-lg
+
+      .active
+        @apply text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700
+
+      .not-active
+        @apply cursor-default
