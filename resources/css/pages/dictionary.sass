@@ -107,3 +107,33 @@
             &-delete
               @apply w-6 h-6 text-red-600
 
+.profile-form
+  @apply flex flex-col mt-6
+
+  &__dropdown
+    @apply sm:col-span-2
+
+    &-label
+      @apply block text-sm font-medium leading-5 text-gray-700
+
+    &-image
+      @apply relative inline-block bg-white p-5 mb-3
+
+      &-img
+        @apply w-32
+
+      &-button
+        @apply flex absolute left-0 bottom-0
+
+      &-svg
+        @apply w-6 h-6
+
+.profile-form-buttons
+  @apply flex items-center space-x-4
+
+.word-form
+  &__item
+    @apply flex flex-col
+
+    &:last-child
+      @apply flex-row items-center space-x-4

@@ -143,14 +143,14 @@
     <template #title>Edit Profile</template>
     <template #body>
       <form>
-        <div class="flex flex-col mt-6">
-          <div class="sm:col-span-2">
-            <label for="file" class="block text-sm font-medium leading-5 text-gray-700">Profile image</label>
+        <div class="profile-form">
+          <div class="profile-form__dropdown">
+            <label for="file" class="profile-form__dropdown-label">Profile image</label>
             <template v-if="image && typeof image !== 'object'">
-              <div class="relative inline-block bg-white p-5 mb-3">
-                <img :src="image" width="100" alt="">
-                <button @click.prevent="deleteImage" class="flex text-primary-500 absolute left-0 bottom-0 hover:bg-primary-700">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <div class="profile-form__dropdown-image">
+                <img :src="image" class="profile-form__dropdown-image-img" alt="profile-image">
+                <button @click.prevent="deleteImage" class="profile-form__dropdown-image-button">
+                  <svg class="profile-form__dropdown-image-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                   </svg>
                 </button>
@@ -163,8 +163,7 @@
           <input-text v-model="password" label="Password" type="password" autocomplete="new-password"/>
           <input-text v-model="passwordConfirm" label="Confirm password" type="password" autocomplete="new-password"/>
         </div>
-
-        <div class="flex items-center space-x-4">
+        <div class="profile-form-buttons">
           <button-default @click.prevent="saveProfile" text="Save"/>
           <button-cancel @click.prevent="closeProfileDialog"/>
         </div>
@@ -175,20 +174,17 @@
   <modal v-if="showAddDialog" @closeDialog="closeWordDialog">
     <template #title>{{ entry && entry.id ? 'Edit translation' : 'Add new translation' }}</template>
     <template #body>
-      <form>
-        <div class="flex flex-col">
+      <form class="word-form">
+        <div class="word-form__item">
           <input-text :v$="v$.text" v-model="entry.text" label="Word or phrase"/>
         </div>
-
-        <div class="flex flex-col">
+        <div class="word-form__item">
           <input-text v-model="entry.transcription" label="Transcription"/>
         </div>
-
-        <div class="flex flex-col">
+        <div class="word-form__item">
           <input-text :v$="v$.translation" v-model="entry.translation" label="Translation"/>
         </div>
-
-        <div class="flex items-center space-x-4">
+        <div class="word-form__item">
           <button-default @click.prevent="saveWord" text="Save"/>
           <button-cancel @click.prevent="closeWordDialog"/>
         </div>
