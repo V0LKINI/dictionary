@@ -1,0 +1,22 @@
+.input-text
+  @apply mt-6
+
+  &__label
+    @apply block text-sm font-medium leading-5 text-gray-700
+
+  .text-wrapper
+    @apply mt-1 rounded-md shadow-sm
+
+    &__input
+      @apply appearance-none block w-full px-3 py-2 border rounded-md
+      @apply transition duration-150 ease-in-out sm:text-sm sm:leading-5 border-gray-300 placeholder-gray-400
+      @apply focus:outline-none focus:border-blue-300
+
+      &-error
+        @apply border-red-300 placeholder-red-400 focus:border-red-300
+
+    &__hint
+      @apply mt-2 text-sm text-gray-500
+
+    &__error
+      @apply mt-2 text-sm text-red-600

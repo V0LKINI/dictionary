@@ -1,0 +1,27 @@
+.modal
+  @apply flex bg-gray-900 bg-opacity-50 fixed inset-0
+
+  &-wrapper
+    @apply flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 md:h-full
+
+    &__inner
+      @apply relative p-4 w-full max-w-2xl h-full md:h-auto
+
+      .modal-content
+        @apply relative p-4 bg-white rounded-lg shadow sm:p-5 overflow-hidden
+
+        &-header
+          @apply p-1 flex justify-between items-center rounded-t border-b
+
+          &__title
+            @apply text-lg font-semibold text-gray-900
+
+          &__button
+            @apply text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto
+            @apply inline-flex items-center
+
+            &-icon
+              @apply w-5 h-5
+
+            &-close
+              @apply sr-only

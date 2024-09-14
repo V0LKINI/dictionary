@@ -1,0 +1,21 @@
+.drop-file
+  @apply mt-1
+
+  &__label
+    @apply block text-gray-600 relative text-center border border-dashed border-2 rounded-lg border-gray-200 p-7
+    @apply cursor-pointer opacity-80 hover:opacity-100
+
+  &__input
+    @apply opacity-0 overflow-hidden absolute w-px h-px
+
+  .dropzone
+    @apply flex justify-center text-sm font-medium font-medium mb-3
+
+    &__icon
+      @apply mr-5
+
+    &__file
+      @apply pt-1
+
+    &__placeholder
+      @apply pt-1

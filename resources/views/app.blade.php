@@ -6,7 +6,7 @@
     <link rel="icon" href="/icon.png" type="image/x-icon">
 
     <title>Dictionary</title>
-    @vite('resources/css/app.css')
+    @vite('resources/css/app.sass')
 </head>
 <body>
     <div id="app"></div>

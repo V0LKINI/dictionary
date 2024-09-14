@@ -1,12 +1,7 @@
 <template>
-  <div class="mt-6">
-    <label
-        class="block text-sm font-medium leading-5 text-gray-700"
-        :class="{'text-red-700': isError()}"
-    >
-      {{ label }}
-    </label>
-    <div class="mt-1 rounded-md shadow-sm">
+  <div class="input-text">
+    <label class="input-text__label" :class="{'text-red-700': isError()}">{{ label }}</label>
+    <div class="text-wrapper">
       <input
           :value="modelValue"
           @input="$emit('update:modelValue', $event.target.value)"
@@ -14,13 +9,11 @@
           :type="type"
           :placeholder="placeholder"
           :autocomplete="autocomplete"
-          :class="{'border-red-300 placeholder-red-400 focus:border-red-300': isError()}"
-          class="appearance-none block w-full px-3 py-2 border rounded-md
-                    transition duration-150 ease-in-out sm:text-sm sm:leading-5 border-gray-300 placeholder-gray-400
-                    focus:outline-none focus:shadow-outline-blue focus:border-blue-300">
+          :class="{'text-wrapper__input-error': isError()}"
+          class="text-wrapper__input">
     </div>
-    <p v-if="hint && !isError()" class="mt-2 text-sm text-gray-500">{{ hint }}</p>
-    <p v-if="isError()" class="mt-2 text-sm text-red-600">{{ serverError !== '' ? serverError : v$.$errors[0].$message }}</p>
+    <p v-if="hint && !isError()" class="text-wrapper__hint">{{ hint }}</p>
+    <p v-if="isError()" class="text-wrapper__error">{{ serverError !== '' ? serverError : v$.$errors[0].$message }}</p>
   </div>
 </template>
 
