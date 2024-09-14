@@ -17,6 +17,9 @@
         </li>
       </ul>
     </nav>
+    <div class="text">
+      Showing {{ pagination.from }} to {{ pagination.to }} of {{ pagination.total }} entries
+    </div>
   </div>
 </template>
 

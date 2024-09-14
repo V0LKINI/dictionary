@@ -64,71 +64,71 @@
     <div v-else class="table-wrapper">
       <table class="table">
         <thead class="table-head">
-        <tr class="table-head__row">
-          <th @click="changeSort('word')" class="table-head__column">
-            <div class="table-head__column-content">
-              Word
-              <svg v-if="sortBy.word === 'ASC'" class="table-head__column-arrow" aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 19V5m0 14-4-4m4 4 4-4"/>
-              </svg>
-              <svg v-else-if="sortBy.word === 'DESC'" class="table-head__column-arrow" aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 6v13m0-13 4 4m-4-4-4 4"/>
-              </svg>
-            </div>
-          </th>
-          <th @click="changeSort('transcription')" class="table-head__column">
-            <div class="table-head__column-content">
-              Transcription
-              <svg v-if="sortBy.transcription === 'ASC'" class="table-head__column-arrow" aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 19V5m0 14-4-4m4 4 4-4"/>
-              </svg>
-              <svg v-else-if="sortBy.transcription === 'DESC'" class="table-head__column-arrow" aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 6v13m0-13 4 4m-4-4-4 4"/>
-              </svg>
-            </div>
-          </th>
-          <th @click="changeSort('translation')" class="table-head__column">
-            <div class="table-head__column-content">
-              Translation
-              <svg v-if="sortBy.translation === 'ASC'" class="table-head__column-arrow" aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 19V5m0 14-4-4m4 4 4-4"/>
-              </svg>
-              <svg v-else-if="sortBy.translation === 'DESC'" class="table-head__column-arrow" aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 6v13m0-13 4 4m-4-4-4 4"/>
-              </svg>
-            </div>
-          </th>
-          <th @click="changeSort('date')" class="table-head__column">
-            <div class="table-head__column-content">
-              Date
-              <svg v-if="sortBy.date === 'DESC'" class="table-head__column-arrow" aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 19V5m0 14-4-4m4 4 4-4"/>
-              </svg>
-              <svg v-else-if="sortBy.date === 'ASC'" class="table-head__column-arrow" aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 6v13m0-13 4 4m-4-4-4 4"/>
-              </svg>
-            </div>
-          </th>
-          <th class="table-head__column">
-            Actions
-          </th>
-        </tr>
+          <tr class="table-head__row">
+            <th @click="changeSort('word')" class="table-head__column">
+              <div class="table-head__column-content">
+                Word
+                <svg v-if="sortBy.word === 'ASC'" class="table-head__column-arrow" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 19V5m0 14-4-4m4 4 4-4"/>
+                </svg>
+                <svg v-else-if="sortBy.word === 'DESC'" class="table-head__column-arrow" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+                </svg>
+              </div>
+            </th>
+            <th @click="changeSort('transcription')" class="table-head__column">
+              <div class="table-head__column-content">
+                Transcription
+                <svg v-if="sortBy.transcription === 'ASC'" class="table-head__column-arrow" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 19V5m0 14-4-4m4 4 4-4"/>
+                </svg>
+                <svg v-else-if="sortBy.transcription === 'DESC'" class="table-head__column-arrow" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+                </svg>
+              </div>
+            </th>
+            <th @click="changeSort('translation')" class="table-head__column">
+              <div class="table-head__column-content">
+                Translation
+                <svg v-if="sortBy.translation === 'ASC'" class="table-head__column-arrow" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 19V5m0 14-4-4m4 4 4-4"/>
+                </svg>
+                <svg v-else-if="sortBy.translation === 'DESC'" class="table-head__column-arrow" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+                </svg>
+              </div>
+            </th>
+            <th @click="changeSort('date')" class="table-head__column">
+              <div class="table-head__column-content">
+                Date
+                <svg v-if="sortBy.date === 'DESC'" class="table-head__column-arrow" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 19V5m0 14-4-4m4 4 4-4"/>
+                </svg>
+                <svg v-else-if="sortBy.date === 'ASC'" class="table-head__column-arrow" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+                </svg>
+              </div>
+            </th>
+            <th class="table-head__column">
+              Actions
+            </th>
+          </tr>
         </thead>
         <tbody class="table-body">
         <tr v-for="word in words" class="table-body__row">
@@ -155,6 +155,9 @@
         </tr>
         </tbody>
       </table>
+    </div>
+
+    <div v-if="!loadData">
       <pagination :pagination="pagination" :on-paginate="entityPaginate"/>
     </div>
   </div>

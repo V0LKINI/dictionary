@@ -21,6 +21,8 @@ class PaginationResource extends JsonResource
             'links' => $this->linkCollection(),
             'currentPage' => $this->currentPage(),
             'lastPage' => $this->lastPage(),
+            'from' => $this->firstItem(),
+            'to' => $this->lastItem(),
         ];
     }
 }
