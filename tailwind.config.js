@@ -6,7 +6,11 @@ export default {
     "./resources/**/*.vue",
   ],
   theme: {
-    extend: {},
+    extend: {
+      boxShadow: {
+        'table': '0 4px 6px 0px rgb(0 0 0 / 0.1), 0 -2px 4px 0px rgb(0 0 0 / 0.1)',
+      }
+    },
   },
   plugins: [],
 }

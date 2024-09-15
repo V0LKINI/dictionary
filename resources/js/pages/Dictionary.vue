@@ -132,7 +132,7 @@
         </thead>
         <tbody class="table-body">
         <tr v-for="word in words" class="table-body__row">
-          <th class="table-body__column">{{ word.text }}</th>
+          <td class="table-body__column">{{ word.text }}</td>
           <td class="table-body__column">{{ word.transcription ?? '—' }}</td>
           <td class="table-body__column">{{ word.translations }}</td>
           <td class="table-body__column">{{ word.created_at }}</td>

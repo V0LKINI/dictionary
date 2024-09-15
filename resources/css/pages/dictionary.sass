@@ -62,16 +62,16 @@
           @apply border-gray-200
 
   .table-wrapper
-    @apply relative overflow-x-auto shadow-md rounded-lg
+    @apply shadow-table relative overflow-x-auto rounded-lg
 
     .table
-      @apply w-full text-sm text-left rtl:text-right text-gray-500 shadow-md
+      @apply border-collapse w-full text-sm text-left rtl:text-right text-gray-500 shadow-md
 
       &-head
-        @apply border-y text-xs text-gray-700 uppercase bg-gray-50
+        @apply sticky top-0 text-xs text-gray-700 uppercase bg-gray-50
 
         &__row
-          @apply hover:bg-gray-50
+          @apply shadow hover:bg-gray-50
 
         &__column
           @apply px-6 py-3
