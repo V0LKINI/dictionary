@@ -1,4 +1,4 @@
-FROM php:8.2.14-fpm
+FROM php:8.3.11-fpm
 LABEL authors="Kirill Volkov"
 
 # Arguments defined in docker-compose.yml
