@@ -1,7 +1,7 @@
 <template>
   <div class="modal">
     <div tabindex="-1" class="modal-wrapper">
-      <div class="modal-wrapper__inner">
+      <div class="modal-wrapper__inner" v-click-outside="() => $emit('closeDialog')">
         <div class="modal-content">
           <!-- Modal header -->
           <div class="modal-content-header">

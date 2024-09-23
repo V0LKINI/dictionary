@@ -382,6 +382,8 @@ const resetEntry = () => {
   entry.value.text = ''
   entry.value.transcription = ''
   entry.value.translation = ''
+
+  v$.value.$reset()
 }
 
 const setEntry = (data) => {
