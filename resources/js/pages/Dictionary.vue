@@ -6,7 +6,7 @@
         <input-search v-model.lazy="searchInput" label="Search" placeholder="Search for words"/>
         <button-default @click.prevent="openWordDialog" text="Add new translation"/>
       </div>
-      <profile/>
+      <navigation/>
     </div>
     <div v-if="loadData" class="spinner-wrapper">
       <spinner/>
@@ -164,7 +164,7 @@ import {computed, reactive, ref, watch} from "vue";
 import InputSearch from "../components/InputSearch.vue";
 import InputDropdown from "../components/InputDropdown.vue";
 import InputText from "../components/InputText.vue";
-import Profile from "../components/Profile.vue";
+import Navigation from "../layouts/Navigation.vue";
 import ButtonDefault from "../components/ButtonDefault.vue";
 import ButtonCancel from "../components/ButtonCancel.vue";
 import Modal from "../components/Modal.vue";

@@ -5,6 +5,7 @@ import Login from './pages/Login.vue'
 import Register from './pages/Register.vue'
 import Recovery from './pages/Recovery.vue'
 import RecoveryConfirm from './pages/RecoveryConfirm.vue'
+import FindTranslation from './pages/Exercises/FindTranslation.vue'
 
 const routes = [
     {
@@ -31,6 +32,11 @@ const routes = [
         path: '/recovery-confirm',
         name: 'RecoveryConfirm',
         component: RecoveryConfirm,
+    },
+    {
+        path: '/exercises/findTranslation',
+        name: 'FindTranslation',
+        component: FindTranslation,
     },
 ]
 
