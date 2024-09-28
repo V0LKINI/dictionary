@@ -1,5 +1,5 @@
 <template>
- <div class="findTranslation">
+ <div class="exercise">
   <div class="head-wrapper">
    <breadcrumbs/>
    <navigation/>
