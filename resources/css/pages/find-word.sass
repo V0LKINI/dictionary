@@ -1,9 +1,6 @@
 .exercise
   @apply flex flex-col h-screen bg-gray-50 py-4 sm:px-6 lg:px-8 px-6
 
-  .spinner-wrapper
-    @apply sticky top-[43%]
-
   .head-wrapper
     @apply flex justify-between
 
@@ -14,16 +11,22 @@
       @apply px-4 py-4 mx-auto min-w-96 w-1/3 h-full bg-white rounded-lg border border-gray-200 shadow-md
 
       &__header
-        @apply p-2 text-big text-center text-gray-900
+        @apply p-2 text-huge text-center text-gray-900
 
       &__body
-        @apply grid grid-cols-2 gap-4 p-4 mt-4
+        @apply grid grid-cols-2 gap-4 p-4
 
       &__answer
-        @apply p-6 border border-gray-300 bg-gray-50 rounded-md text-center cursor-pointer text
+        @apply p-4 border border-gray-300 bg-gray-50 rounded-md text-center cursor-pointer text
 
         &-correct
           @apply bg-green-200
 
         &-error
           @apply bg-red-200
+
+        &-text
+          @apply text-big
+
+        &-transcription
+          @apply text-small

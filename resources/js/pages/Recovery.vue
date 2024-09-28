@@ -1,12 +1,12 @@
 <template>
-    <div v-if="!isSent" class="page">
-        <div class="container">
-            <h2 class="h2">Forgot your password?</h2>
-            <p class="text-small"><link-router text="Back to login" route="Login"/></p>
+    <div v-if="!isSent" class="recovery">
+        <div class="recovery__container">
+            <h2 class="recovery__title">Forgot your password?</h2>
+            <p class="recovery__text"><link-router text="Back to login" route="Login"/></p>
         </div>
 
-        <div class="container">
-            <div class="form">
+        <div class="recovery__container">
+            <div class="recovery__form">
                 <form>
                     <input-text
                         v-model="credentials" hint="Enter your email address to send the recovery link"
@@ -20,11 +20,11 @@
         </div>
     </div>
 
-    <div v-if="isSent" class="page">
-        <div class="container">
-            <h2 class="h2">Success</h2>
-            <p class="text-small">The link to password recovery has been successfully sent to your email account</p>
-            <p class="text-small"><link-router text="Back to login" route="Login"/></p>
+    <div v-if="isSent" class="recovery">
+        <div class="recovery__container">
+            <h2 class="recovery__title">Success</h2>
+            <p class="recovery__text">The link to password recovery has been successfully sent to your email account</p>
+            <p class="recovery__text"><link-router text="Back to login" route="Login"/></p>
         </div>
     </div>
 </template>

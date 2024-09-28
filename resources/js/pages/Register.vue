@@ -1,11 +1,11 @@
 <template>
-    <div class="page">
-        <div class="container">
-            <h2 class="h2">Sign up a new account</h2>
-            <p class="text-small">Or <link-router text="login to existed one" route="Login"/></p>
+    <div class="register">
+        <div class="register__container">
+            <h2 class="register__title">Sign up a new account</h2>
+            <p class="register__text">Or <link-router text="login to existed one" route="Login"/></p>
         </div>
-        <div class="container">
-            <div class="form">
+        <div class="register__container">
+            <div class="register__form">
                 <form>
                     <input-text v-model="name" label="Name"/>
                     <input-text v-model="credentials" label="Email"/>
