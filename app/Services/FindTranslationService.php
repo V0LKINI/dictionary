@@ -30,8 +30,8 @@ class FindTranslationService
             ->take(5)
             ->get();
 
-        $words->add($sample)->shuffle();
+        $words->add($sample);
 
-        return $words;
+        return $words->shuffle();
     }
 }
