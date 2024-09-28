@@ -27,7 +27,7 @@ class FindTranslationService
             ->where('words.id', '!=', $sample->id)
             ->select('words.id', 'words.text', 'words.transcription', 'translations.text as translation', 'words.created_at')
             ->inRandomOrder()
-            ->take(3)
+            ->take(5)
             ->get();
 
         $words->add($sample)->shuffle();

@@ -1,10 +1,13 @@
 .exercises-button
 
   &__button
-    @apply p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-300
+    @apply p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-200
 
     &-icon
       @apply w-6 h-6
+
+  .active
+    @apply bg-gray-700 text-gray-100
 
   &__dropdown
     @apply absolute z-50 sm:right-44 top-12 sm:top-16 shadow-table

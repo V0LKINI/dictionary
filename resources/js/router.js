@@ -6,6 +6,7 @@ import Register from './pages/Register.vue'
 import Recovery from './pages/Recovery.vue'
 import RecoveryConfirm from './pages/RecoveryConfirm.vue'
 import FindTranslation from './pages/Exercises/FindTranslation.vue'
+import FindWord from './pages/Exercises/FindWord.vue'
 
 const routes = [
     {
@@ -37,6 +38,11 @@ const routes = [
         path: '/exercises/findTranslation',
         name: 'FindTranslation',
         component: FindTranslation,
+    },
+    {
+        path: '/exercises/findWord',
+        name: 'FindWord',
+        component: FindWord,
     },
 ]
 

@@ -10,7 +10,7 @@
   <div v-else class="exercise-wrapper">
    <div class="card">
     <div class="card__header">
-     {{ sample.text }}
+     {{ sample.translations }}
     </div>
     <div class="card__body">
      <div v-for="word in words"
@@ -18,7 +18,7 @@
           class="card__answer"
           :class="{'card__answer-correct': word.result === true, 'card__answer-error': word.result === false}"
      >
-       {{ word.translations }}
+       {{ word.text }}
      </div>
      <button-cancel @click="nextSample" text="Skip"/>
      <button-default @click="nextSample" text="Next" :disabled="nextButtonDisabled"/>
