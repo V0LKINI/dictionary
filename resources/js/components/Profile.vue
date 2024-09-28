@@ -1,0 +1,143 @@
+<template>
+ <div class="profile">
+  <div @click="toggleProfile()" v-click-outside="() => toggleProfile(true)" class="profile-info">
+   <img type="button" data-dropdown-placement="bottom-start" class="profile-info__image"
+        :src="user.image != null ? user.image : defaultProfileImage" alt="User avatar">
+   <div>
+    <div class="profile-info__name">{{ user.name }}</div>
+    <div class="profile-info__joined">Joined in {{ user.created_at }}</div>
+   </div>
+  </div>
+  <!-- User dropdown -->
+  <div v-if="showMenu" class="profile-dropdown">
+   <div class="profile-dropdown__email">
+    <div class="profile-dropdown__email-text">{{ user.email }}</div>
+   </div>
+   <div class="profile-dropdown__settings">
+    <button @click="openProfileDialog()" class="profile-dropdown__settings-button">
+     Settings
+    </button>
+   </div>
+   <div class="profile-dropdown__signout">
+    <button @click="authStore.logout()" class="profile-dropdown__signout-button">
+     Sign out
+    </button>
+   </div>
+  </div>
+ </div>
+ <modal v-if="showProfileDialog" @closeDialog="closeProfileDialog">
+  <template #title>Edit Profile</template>
+  <template #body>
+   <form>
+    <div class="profile-form">
+     <div class="profile-form__dropdown">
+      <label for="file" class="profile-form__dropdown-label">Profile image</label>
+      <template v-if="image && typeof image !== 'object'">
+       <div class="profile-form__dropdown-image">
+        <img :src="image" class="profile-form__dropdown-image-img" alt="profile-image">
+        <button @click.prevent="deleteImage" class="profile-form__dropdown-image-button">
+         <svg class="profile-form__dropdown-image-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+         </svg>
+        </button>
+       </div>
+      </template>
+      <drop-file v-model="image"/>
+     </div>
+     <input-text v-model="name" label="Name"/>
+     <input-text v-model="email" label="Email"/>
+     <input-text v-model="password" label="Password" type="password" autocomplete="new-password"/>
+     <input-text v-model="passwordConfirm" label="Confirm password" type="password" autocomplete="new-password"/>
+    </div>
+    <div class="profile-form-buttons">
+     <button-default @click.prevent="saveProfile" text="Save"/>
+     <button-cancel @click.prevent="closeProfileDialog"/>
+    </div>
+   </form>
+  </template>
+ </modal>
+</template>
+
+<script setup>
+
+import ButtonDefault from "./ButtonDefault.vue";
+import Modal from "./Modal.vue";
+import ButtonCancel from "./ButtonCancel.vue";
+import InputText from "./InputText.vue";
+import DropFile from "./DropFile.vue";
+import defaultProfileImage from "../../static/img/no-image-man.png";
+import {useAuthStore} from "../stores/AuthStore.js";
+import {ref} from "vue";
+
+const showProfileDialog = ref(false)
+const showMenu = ref(false)
+
+//Auth
+const authStore = useAuthStore();
+const user = ref(JSON.parse(localStorage.getItem('authUser')))
+const image = ref(null);
+const name = ref('')
+const email = ref('')
+const password = ref('')
+const passwordConfirm = ref('')
+
+const toggleProfile = (clickOutside = false) => {
+    if (clickOutside) {
+        showMenu.value = false;
+    } else {
+        showMenu.value = !showMenu.value;
+    }
+}
+
+//Profile dialog
+const openProfileDialog = () => {
+    showProfileDialog.value = true;
+    setUserFields();
+}
+
+const setUserFields = () => {
+    image.value = user.value.image;
+    name.value = user.value.name;
+    email.value = user.value.email;
+}
+
+const closeProfileDialog = () => {
+    showProfileDialog.value = false;
+}
+
+const deleteImage = () => {
+    image.value = '';
+}
+
+const saveProfile = () => {
+    let formData = new FormData();
+
+    formData.append('_method', 'put');
+    formData.append('image', image.value);
+    formData.append('id', user.value.id);
+    formData.append('name', name.value);
+    formData.append('email', email.value);
+    formData.append('password', password.value);
+    formData.append('password_confirm', passwordConfirm.value);
+
+    axios.post('/api/profile/', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        }
+    ).then((r) => {
+        let response = r.data;
+
+        if (response.success) {
+            user.value = response.data.user;
+            setUserFields();
+            localStorage.setItem('authUser', JSON.stringify(response.data.user));
+            closeProfileDialog();
+        } else {
+            error.value = response.error.message;
+        }
+    });
+}
+</script>

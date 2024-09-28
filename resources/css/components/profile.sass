@@ -1,0 +1,59 @@
+.profile
+  @apply flex flex-wrap justify-start sm:justify-end space-y-4 sm:space-y-0 items-center gap-x-2
+
+  &-info
+    @apply flex items-center gap-4
+
+    &__image
+      @apply w-10 h-10 rounded-full cursor-pointer object-cover
+
+    &__name
+      @apply font-medium
+
+    &__joined
+      @apply font-medium text-sm text-gray-500
+
+  &-dropdown
+    @apply absolute z-10 sm:right-32 top-16 sm:top-20 bg-white divide-y divide-gray-100 rounded-lg shadow w-44
+
+    &__email
+      @apply px-4 py-3 text-sm text-gray-900
+
+      &-text
+        @apply font-medium truncate
+
+    &__settings
+      @apply py-1
+
+      &-button
+        @apply block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100
+
+    &__signout
+      @apply py-1
+
+      &-button
+        @apply block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100
+
+.profile-form
+  @apply flex flex-col mt-6
+
+  &__dropdown
+    @apply sm:col-span-2
+
+    &-label
+      @apply block text-sm font-medium leading-5 text-gray-700
+
+    &-image
+      @apply relative inline-block bg-white p-5 mb-3
+
+      &-img
+        @apply w-32
+
+      &-button
+        @apply flex absolute left-0 bottom-0
+
+      &-svg
+        @apply w-6 h-6
+
+.profile-form-buttons
+  @apply flex items-center space-x-4

@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\Site\AuthController;
-use App\Http\Controllers\Site\DictionaryController;
-use App\Http\Controllers\Site\ProfileController;
+use App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,24 +14,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::middleware('guest')->group(function () {
-    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
-    Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
-    Route::post('/reset-password', [AuthController::class, 'recovery'])->name('password.recovery');
-    Route::post('/set-new-password', [AuthController::class, 'setNewPassword'])->name('password.setNewPassword');
-    Route::post('/reset-password/{token}', [AuthController::class, 'verifyToken'])->name('password.verifyToken');
+    Route::post('/login', [Api\AuthController::class, 'login'])->name('auth.login');
+    Route::post('/register', [Api\AuthController::class, 'register'])->name('auth.register');
+    Route::post('/reset-password', [Api\AuthController::class, 'recovery'])->name('password.recovery');
+    Route::post('/set-new-password', [Api\AuthController::class, 'setNewPassword'])->name('password.setNewPassword');
+    Route::post('/reset-password/{token}', [Api\AuthController::class, 'verifyToken'])->name('password.verifyToken');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('profile')->name('profile.')->group(function () {
-        Route::put('/', [ProfileController::class, 'save'])->name('save');
+        Route::put('/', [Api\ProfileController::class, 'save'])->name('save');
     });
 
     Route::prefix('dictionary')->name('dictionary.')->group(function () {
-        Route::get('/list', [DictionaryController::class, 'list'])->name('list');
-        Route::post('/save', [DictionaryController::class, 'save'])->name('save');
-        Route::get('/translate', [DictionaryController::class, 'translate'])->name('translate');
-        Route::get('/crawl', [DictionaryController::class, 'crawl'])->name('crawl');
-        Route::get('/{id}', [DictionaryController::class, 'show'])->name('show');
-        Route::delete('/{id}', [DictionaryController::class, 'delete'])->name('delete');
+        Route::get('/list', [Api\DictionaryController::class, 'list'])->name('list');
+        Route::post('/save', [Api\DictionaryController::class, 'save'])->name('save');
+        Route::get('/translate', [Api\DictionaryController::class, 'translate'])->name('translate');
+        Route::get('/crawl', [Api\DictionaryController::class, 'crawl'])->name('crawl');
+        Route::get('/{id}', [Api\DictionaryController::class, 'show'])->name('show');
+        Route::delete('/{id}', [Api\DictionaryController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('exercises')->name('exercises.')->group(function () {
+        Route::prefix('findTranslation')->name('findTranslation.')->group(function () {
+            Route::get('/getData', [Api\FindTranslationController::class, 'getData'])->name('getData');
+        });
     });
 });
