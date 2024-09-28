@@ -1,27 +1,26 @@
 <template>
-    <div class="page">
+    <div class="recovery-confirm">
         <div v-if="!isLoaded">
             <spinner/>
         </div>
 
         <div v-else-if="isLoaded && isTokenCorrect && credentials && !isChanged">
-            <div class="container">
-                <div class="form">
-                    <h2 class="h2">Enter new password</h2>
+            <div class="recovery-confirm__container">
+                <div class="recovery-confirm__form">
+                    <h2 class="recovery-confirm__title">Enter new password</h2>
                     <form>
                         <input-text v-model="password" :v$="v$.password" label="Password" type="password"/>
                         <input-text v-model="passwordConfirm" :v$="v$.passwordConfirm" label="Password confirm" type="password"/>
-
                         <button-default @click="changePassword" text="Change password"/>
                     </form>
                 </div>
             </div>
         </div>
 
-        <div class="container">
-            <h2 class="h2">Success</h2>
-            <p class="text-small">Your password has been successfully changed</p>
-            <p class="text-small"><link-router text="Back to login" route="Login"/></p>
+        <div class="recovery-confirm__container">
+            <h2 class="recovery-confirm__title">Success</h2>
+            <p class="recovery-confirm__text">Your password has been successfully changed</p>
+            <p class="recovery-confirm__text"><link-router text="Back to login" route="Login"/></p>
         </div>
     </div>
 </template>

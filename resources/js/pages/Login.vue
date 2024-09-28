@@ -1,17 +1,17 @@
 <template>
-    <div class="page">
-        <div class="container">
-            <h2 class="h2">Sign in to your account</h2>
-            <p class="text-small">Not registered? <link-router text="Create an account." route="Register"/></p>
+    <div class="login">
+        <div class="login__container">
+            <h2 class="login__title">Sign in to your account</h2>
+            <p class="login__text">Not registered? <link-router text="Create an account." route="Register"/></p>
         </div>
-        <div class="container">
-            <div class="form">
+        <div class="login__container">
+            <div class="login__form">
                 <form>
                     <input-text v-model="credentials" :v$="v$.credentials" :server-error="serverErrors.credentials" label="Email"/>
                     <input-text v-model="password" :v$="v$.password" :server-error="serverErrors.password" label="Password" type="password"/>
-                    <div class="form__bottom">
+                    <div class="login__form-bottom">
                         <input-checkbox label="Remember me"/>
-                        <div class="form__bottom-link"><link-router text="Forgot your password?" route="Recovery"/></div>
+                        <div class="login__form-link"><link-router text="Forgot your password?" route="Recovery"/></div>
                     </div>
                     <button-default @click="login" text="Sign In"/>
                 </form>

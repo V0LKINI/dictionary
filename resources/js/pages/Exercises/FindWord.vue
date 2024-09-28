@@ -4,10 +4,7 @@
    <breadcrumbs/>
    <navigation/>
   </div>
-  <div v-if="loadData" class="spinner-wrapper">
-   <spinner/>
-  </div>
-  <div v-else class="exercise-wrapper">
+  <div class="exercise-wrapper">
    <div class="card">
     <div class="card__header">
      {{ sample.translations }}
@@ -18,7 +15,8 @@
           class="card__answer"
           :class="{'card__answer-correct': word.result === true, 'card__answer-error': word.result === false}"
      >
-       {{ word.text }}
+       <p class="card__answer-text">{{ word.text }}</p>
+       <p class="card__answer-transcription">{{ word.transcription }}</p>
      </div>
      <button-cancel @click="nextSample" text="Skip"/>
      <button-default @click="nextSample" text="Next" :disabled="nextButtonDisabled"/>
@@ -37,17 +35,12 @@
   import ButtonDefault from "../../components/ButtonDefault.vue";
   import ButtonCancel from "../../components/ButtonCancel.vue";
 
-  const loadData = ref(false)
   const sample = ref(null)
   const words = ref([])
   const nextButtonDisabled = ref(true)
 
   const getSample = () => {
-      loadData.value = true
-
       axios.get('/api/exercises/findTranslation/getData').then((r) => {
-          loadData.value = false
-
           let response = r.data;
 
           if (response.success) {
