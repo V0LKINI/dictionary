@@ -8,17 +8,13 @@ use App\Http\Requests\TranslateRequest;
 use App\Http\Resources\PaginationResource;
 use App\Http\Resources\WordResource;
 use App\Http\Resources\WordsListResource;
-use App\Services\CrawlerService;
 use App\Services\DictionaryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DictionaryController extends Controller
 {
-    public function __construct(
-        private readonly DictionaryService $dictionaryService,
-        private readonly CrawlerService $crawlerService,
-    ) {}
+    public function __construct(private readonly DictionaryService $dictionaryService,) {}
 
     /**
      * Get words list
@@ -52,23 +48,6 @@ class DictionaryController extends Controller
             return $this->success(WordResource::make($item));
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        }
-    }
-
-    /**
-     * Crawl word's info
-     *
-     * @param Request $request
-     */
-    public function crawl(TranslateRequest $request)
-    {
-        try {
-            $html = $this->crawlerService->sendRequest(text: $request->text);
-            $data = $this->crawlerService->crawl(html: $html);
-
-            return $this->success($data);
-        } catch (\Exception $e) {
-            return $this->error($e->getMessage());
         }
     }
 

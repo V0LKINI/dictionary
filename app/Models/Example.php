@@ -16,7 +16,12 @@ class Example extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $guarded = [];
+    /**
+     * The attributes that are not mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $guarded = ['id'];
 
     /*
     |--------------------------------------------------------------------------

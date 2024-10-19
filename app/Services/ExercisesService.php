@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\Word;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
-class FindTranslationService
+class ExercisesService
 {
     public function getSample(): Word
     {
@@ -13,7 +14,7 @@ class FindTranslationService
             ->join('translations', 'words.id', '=', 'translations.word_id')
             ->where('user_id', auth()->id())
             ->select('words.id', 'words.text', 'words.transcription', 'translations.text as translation', 'words.created_at')
-            ->inRandomOrder()
+            ->orderBy('repeated_at')
             ->first();
 
         return $sample;
@@ -33,5 +34,17 @@ class FindTranslationService
         $words->add($sample);
 
         return $words->shuffle();
+    }
+
+    public function updateRepeatedDatetime(int $wordId): void
+    {
+        $word = Word::findOrFail($wordId);
+
+        if (auth()->user()->cannot('edit', $word)) {
+            throw new Exception( 'Access denied', 403);
+        }
+
+        $word->repeated_at = now();
+        $word->save();
     }
 }

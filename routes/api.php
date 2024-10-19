@@ -30,14 +30,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/list', [Api\DictionaryController::class, 'list'])->name('list');
         Route::post('/save', [Api\DictionaryController::class, 'save'])->name('save');
         Route::get('/translate', [Api\DictionaryController::class, 'translate'])->name('translate');
-        Route::get('/crawl', [Api\DictionaryController::class, 'crawl'])->name('crawl');
         Route::get('/{id}', [Api\DictionaryController::class, 'show'])->name('show');
         Route::delete('/{id}', [Api\DictionaryController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('exercises')->name('exercises.')->group(function () {
-        Route::prefix('findTranslation')->name('findTranslation.')->group(function () {
-            Route::get('/getData', [Api\FindTranslationController::class, 'getData'])->name('getData');
-        });
+        Route::get('/getData', [Api\ExercisesController::class, 'getData'])->name('getData');
+        Route::post('/saveAnswer', [Api\ExercisesController::class, 'saveAnswer'])->name('saveAnswer');
     });
 });

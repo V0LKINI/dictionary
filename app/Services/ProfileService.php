@@ -35,4 +35,10 @@ class ProfileService
 
         return $user;
     }
+
+    public function incrementExperience(): void
+    {
+        auth()->user()->experience += 1;
+        auth()->user()->save();
+    }
 }
