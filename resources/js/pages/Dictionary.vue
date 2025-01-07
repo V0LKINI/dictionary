@@ -4,7 +4,7 @@
       <div class="filter">
         <input-dropdown v-model="period" :options="periodOptions"/>
         <input-search v-model.lazy="searchInput" label="Search" placeholder="Search for words"/>
-        <button-default @click.prevent="openWordDialog" text="Add new translation"/>
+        <button-default @click.prevent="openWordDialog" text="Add new entry"/>
       </div>
       <navigation/>
     </div>
@@ -16,12 +16,12 @@
         <div class="not-found-header">
           <h2 class="h2">
             <p>Sorry, we didn't find any words =( </p>
-            <p>To add new words, you need to follow a few steps:</p>
+            <p>To add new entries, you need to follow a few steps:</p>
           </h2>
         </div>
         <div class="not-found-stage">
           <div class="not-found-stage__text">
-            <h3 class="h3">1: Press "Add new translation" button at the top of the screen</h3>
+            <h3 class="h3">1: Press "Add new entry" button at the top of the screen</h3>
           </div>
         </div>
         <div class="not-found-stage">
@@ -138,7 +138,7 @@
   </div>
 
   <modal v-if="showAddDialog" @closeDialog="closeWordDialog">
-    <template #title>{{ entry && entry.id ? 'Edit translation' : 'Add new translation' }}</template>
+    <template #title>{{ entry && entry.id ? 'Edit entry' : 'Add new entry' }}</template>
     <template #body>
       <form class="word-form">
         <div class="word-form__item">
@@ -182,7 +182,7 @@ const searchInput = ref('')
 const period = ref('')
 
 const periodOptions = ref([
-  {value: '', name: 'Select a period', selected: true},
+  {value: '', name: 'Selected period', selected: true},
   {value: 'day', name: 'Last day', selected: false},
   {value: 'week', name: 'Last week', selected: false},
   {value: 'month', name: 'Last month', selected: false},

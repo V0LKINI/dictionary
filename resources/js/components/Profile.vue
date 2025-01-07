@@ -13,9 +13,9 @@
    <div class="profile-dropdown__email">
     <div class="profile-dropdown__email-text">{{ user.email }}</div>
    </div>
-   <div class="profile-dropdown__settings">
-    <button @click="openProfileDialog()" class="profile-dropdown__settings-button">
-     Settings
+   <div class="profile-dropdown__profile">
+    <button @click="openProfileDialog()" class="profile-dropdown__profile-button">
+     Profile
     </button>
    </div>
    <div class="profile-dropdown__signout">
