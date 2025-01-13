@@ -24,6 +24,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::put('/', [Api\ProfileController::class, 'save'])->name('save');
+        Route::put('/changeLocale', [Api\ProfileController::class, 'changeLocale'])->name('changeLocale');
     });
 
     Route::prefix('dictionary')->name('dictionary.')->group(function () {

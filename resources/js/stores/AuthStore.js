@@ -29,6 +29,7 @@ export const useAuthStore = defineStore("authStore", () => {
 
                 localStorage.setItem('authUser', JSON.stringify(response.data.user));
                 localStorage.setItem('token', response.data.token);
+                localStorage.setItem('locale', response.data.user.locale)
 
                 router.push({name: 'Dictionary'})
             }

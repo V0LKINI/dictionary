@@ -41,4 +41,16 @@ class ProfileService
         auth()->user()->experience += 1;
         auth()->user()->save();
     }
+
+    public function changeLocale(string $locale): User
+    {
+        $user = auth()->user();
+
+        $user->locale = $locale;
+        $user->save();
+
+        return $user;
+    }
+
+
 }

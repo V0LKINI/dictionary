@@ -53,10 +53,10 @@
      </svg>
      Back
     </div>
-    <div @click="changeLanguages('en')" class="languages-dropdown__item">
+    <div @click="changeLanguage('en')" class="languages-dropdown__item">
      English
     </div>
-    <div @click="changeLanguages('ru')"  class="languages-dropdown__item">
+    <div @click="changeLanguage('ru')"  class="languages-dropdown__item">
      Русский
     </div>
    </div>
@@ -107,6 +107,9 @@ import DropFile from "./DropFile.vue";
 import defaultProfileImage from "../../static/img/no-image-man.png";
 import {useAuthStore} from "../stores/AuthStore.js";
 import {ref} from "vue";
+import { useI18n } from 'vue-i18n';
+
+const {t, locale} = useI18n();
 
 const showProfileDialog = ref(false)
 const showLanguages = ref(false)
@@ -194,9 +197,19 @@ const hideLanguages = () => {
   showLanguages.value = false;
 }
 
-const changeLanguages = (code) => {
-  //Todo change language logic
-}
+const changeLanguage = (code) => {
+  axios.put('/api/profile/changeLocale', {locale: code}).then((r) => {
+    let response = r.data;
 
+    if (response.success) {
+      let user = response.data.user
+
+      locale.value = user.locale;
+
+      localStorage.setItem('authUser', JSON.stringify(user));
+      localStorage.setItem('locale', code)
+    }
+  });
+}
 
 </script>
