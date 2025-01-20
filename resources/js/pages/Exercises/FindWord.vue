@@ -18,8 +18,8 @@
             <p class="card__answer-text">{{ word.text }}</p>
             <p class="card__answer-transcription">{{ word.transcription }}</p>
           </div>
-          <button-cancel @click="nextSample" text="Skip"/>
-          <button-default @click="nextSample" text="Next" :disabled="nextButtonDisabled"/>
+          <button-cancel @click="nextSample" :text="__('exercises.skip')"/>
+          <button-default @click="nextSample" :text="__('exercises.next')" :disabled="nextButtonDisabled"/>
         </div>
       </div>
     </div>

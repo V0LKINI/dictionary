@@ -1,19 +1,19 @@
 <template>
     <div class="login">
         <div class="login__container">
-            <h2 class="login__title">Sign in to your account</h2>
-            <p class="login__text">Not registered? <link-router text="Create an account." route="Register"/></p>
+            <h2 class="login__title">{{ __('login.title') }}</h2>
+            <p class="login__text">{{ __('login.not_registered') }} <link-router :text="__('login.not_registered_link')" route="Register"/></p>
         </div>
         <div class="login__container">
             <div class="login__form">
                 <form>
-                    <input-text v-model="credentials" :v$="v$.credentials" :server-error="serverErrors.credentials" label="Email"/>
-                    <input-text v-model="password" :v$="v$.password" :server-error="serverErrors.password" label="Password" type="password"/>
+                    <input-text v-model="credentials" :v$="v$.credentials" :server-error="serverErrors.credentials" :label="__('login.label_email')"/>
+                    <input-text v-model="password" :v$="v$.password" :server-error="serverErrors.password" :label="__('login.label_password')" type="password"/>
                     <div class="login__form-bottom">
-                        <input-checkbox label="Remember me"/>
-                        <div class="login__form-link"><link-router text="Forgot your password?" route="Recovery"/></div>
+                        <input-checkbox :label="__('login.remember_me_checkbox')"/>
+                        <div class="login__form-link"><link-router :text="__('login.forgot_password_link')" route="Recovery"/></div>
                     </div>
-                    <button-default @click="login" text="Sign In"/>
+                    <button-default @click="login" :text="__('login.sign_in_button')"/>
                 </form>
             </div>
         </div>
@@ -25,7 +25,6 @@
 import {watch, computed, reactive, ref} from "vue";
 import {useAuthStore} from "../stores/AuthStore.js";
 import ButtonDefault from "../components/ButtonDefault.vue";
-import LinkDefault from "../components/LinkDefault.vue";
 import LinkRouter from "../components/LinkRouter.vue";
 import InputText from "../components/InputText.vue";
 import InputCheckbox from "../components/InputCheckbox.vue";

@@ -1,17 +1,17 @@
 <template>
     <div class="register">
         <div class="register__container">
-            <h2 class="register__title">Sign up a new account</h2>
-            <p class="register__text">Or <link-router text="login to existed one" route="Login"/></p>
+            <h2 class="register__title">{{ __('register.title') }}</h2>
+            <p class="register__text">{{ __('register.or') }} <link-router :text="__('register.login_link')" route="Login"/></p>
         </div>
         <div class="register__container">
             <div class="register__form">
                 <form>
-                    <input-text v-model="name" label="Name"/>
-                    <input-text v-model="credentials" label="Email"/>
-                    <input-text v-model="password" label="Password" type="password"/>
-                    <input-text v-model="passwordConfirm" label="Confirm password" type="password"/>
-                    <button-default @click="register" text="Sign up"/>
+                    <input-text v-model="name" :label="__('register.form_name')"/>
+                    <input-text v-model="credentials" :label="__('register.form_email')"/>
+                    <input-text v-model="password" :label="__('register.form_password')" type="password"/>
+                    <input-text v-model="passwordConfirm" :label="__('register.form_confirm_password')" type="password"/>
+                    <button-default @click="register" :text="__('register.form_button')"/>
                 </form>
             </div>
         </div>

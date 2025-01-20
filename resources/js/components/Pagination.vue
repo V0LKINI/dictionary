@@ -18,7 +18,7 @@
       </ul>
     </nav>
     <div class="text">
-      Showing {{ pagination.from }} to {{ pagination.to }} of {{ pagination.total }} entries
+      {{ __('pagination.showing', {from: pagination.from, to: pagination.to, total: pagination.total }) }}
     </div>
   </div>
 </template>

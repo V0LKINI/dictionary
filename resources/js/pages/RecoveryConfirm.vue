@@ -7,20 +7,20 @@
         <div v-else-if="isLoaded && isTokenCorrect && credentials && !isChanged">
             <div class="recovery-confirm__container">
                 <div class="recovery-confirm__form">
-                    <h2 class="recovery-confirm__title">Enter new password</h2>
+                    <h2 class="recovery-confirm__title">{{ __('recovery_confirm.title') }}</h2>
                     <form>
-                        <input-text v-model="password" :v$="v$.password" label="Password" type="password"/>
-                        <input-text v-model="passwordConfirm" :v$="v$.passwordConfirm" label="Password confirm" type="password"/>
-                        <button-default @click="changePassword" text="Change password"/>
+                        <input-text v-model="password" :v$="v$.password" :label="__('recovery_confirm.password')" type="password"/>
+                        <input-text v-model="passwordConfirm" :v$="v$.passwordConfirm" :label="__('recovery_confirm.password_confirm')" type="password"/>
+                        <button-default @click="changePassword" :text="__('recovery_confirm.change_button')"/>
                     </form>
                 </div>
             </div>
         </div>
 
         <div class="recovery-confirm__container">
-            <h2 class="recovery-confirm__title">Success</h2>
-            <p class="recovery-confirm__text">Your password has been successfully changed</p>
-            <p class="recovery-confirm__text"><link-router text="Back to login" route="Login"/></p>
+            <h2 class="recovery-confirm__title">{{ __('recovery_confirm.popup_title') }}</h2>
+            <p class="recovery-confirm__text">{{ __('recovery_confirm.popup_text') }}</p>
+            <p class="recovery-confirm__text"><link-router :text="__('recovery_confirm.popup_button')" route="Login"/></p>
         </div>
     </div>
 </template>

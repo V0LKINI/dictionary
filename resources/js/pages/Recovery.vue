@@ -1,20 +1,20 @@
 <template>
     <div v-if="!isSent" class="recovery">
         <div class="recovery__container">
-            <h2 class="recovery__title">Forgot your password?</h2>
-            <p class="recovery__text"><link-router text="Back to login" route="Login"/></p>
+            <h2 class="recovery__title">{{ __('recovery.title') }}</h2>
+            <p class="recovery__text"><link-router :text="__('recovery.login_button')" route="Login"/></p>
         </div>
 
         <div class="recovery__container">
             <div class="recovery__form">
                 <form>
                     <input-text
-                        v-model="credentials" hint="Enter your email address to send the recovery link"
+                        v-model="credentials" :hint="__('recovery.email_hint')"
                         :v$="v$.credentials"
                         :server-error="serverErrors.credentials"
-                        label="Email"
+                        :label="__('recovery.email')"
                     />
-                    <button-default @click="recovery" text="Send email"/>
+                    <button-default @click="recovery" :text="__('recovery.send_mail_button')"/>
                 </form>
             </div>
         </div>
@@ -22,9 +22,9 @@
 
     <div v-if="isSent" class="recovery">
         <div class="recovery__container">
-            <h2 class="recovery__title">Success</h2>
-            <p class="recovery__text">The link to password recovery has been successfully sent to your email account</p>
-            <p class="recovery__text"><link-router text="Back to login" route="Login"/></p>
+            <h2 class="recovery__title">{{ __('recovery.popup_title') }}</h2>
+            <p class="recovery__text">{{ __('recovery.popup_text') }}</p>
+            <p class="recovery__text"><link-router :text="__('recovery.popup_button')" route="Login"/></p>
         </div>
     </div>
 </template>

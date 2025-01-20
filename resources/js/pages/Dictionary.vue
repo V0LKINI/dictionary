@@ -3,8 +3,8 @@
     <div class="head-wrapper">
       <div class="filter">
         <input-dropdown v-model="period" :options="periodOptions"/>
-        <input-search v-model.lazy="searchInput" label="Search" placeholder="Search for words"/>
-        <button-default @click.prevent="openWordDialog" text="Add new entry"/>
+        <input-search v-model.lazy="searchInput" :label="__('dictionary.search_label')" :placeholder="__('dictionary.search_placeholder')"/>
+        <button-default @click.prevent="openWordDialog" :text="__('dictionary.add_entry_button')"/>
       </div>
       <navigation/>
     </div>
@@ -14,24 +14,21 @@
     <div v-else-if="!loadData && words.length === 0" class="not-found-wrapper">
       <div class="not-found">
         <div class="not-found-header">
-          <h2 class="h2">
-            <p>Sorry, we didn't find any words =( </p>
-            <p>To add new entries, you need to follow a few steps:</p>
-          </h2>
+          <h2 class="h2" v-html="__('dictionary.not_found_title')"></h2>
         </div>
         <div class="not-found-stage">
           <div class="not-found-stage__text">
-            <h3 class="h3">1: Press "Add new entry" button at the top of the screen</h3>
+            <h3 class="h3">{{ __('dictionary.not_found_hint_1') }}</h3>
           </div>
         </div>
         <div class="not-found-stage">
           <div class="not-found-stage__text">
-            <h3 class="h3">2: Enter a word and its translation or use an auto translation icon</h3>
+            <h3 class="h3">{{ __('dictionary.not_found_hint_2') }}</h3>
           </div>
         </div>
         <div class="not-found-stage">
           <div class="not-found-stage__text">
-            <h3 class="h3">3: Click "Save" button</h3>
+            <h3 class="h3">{{ __('dictionary.not_found_hint_3') }}</h3>
           </div>
         </div>
       </div>
@@ -42,7 +39,7 @@
           <tr class="table-head__row">
             <th @click="changeSort('word')" class="table-head__column">
               <div class="table-head__column-content">
-                Word
+                {{ __('dictionary.table_word') }}
                 <svg v-if="sortBy.word === 'ASC'" class="table-head__column-arrow" aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -57,7 +54,7 @@
             </th>
             <th @click="changeSort('transcription')" class="table-head__column">
               <div class="table-head__column-content">
-                Transcription
+                {{ __('dictionary.table_transcription') }}
                 <svg v-if="sortBy.transcription === 'ASC'" class="table-head__column-arrow" aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -72,7 +69,7 @@
             </th>
             <th @click="changeSort('translation')" class="table-head__column">
               <div class="table-head__column-content">
-                Translation
+                {{ __('dictionary.table_translation') }}
                 <svg v-if="sortBy.translation === 'ASC'" class="table-head__column-arrow" aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -87,7 +84,7 @@
             </th>
             <th @click="changeSort('date')" class="table-head__column">
               <div class="table-head__column-content">
-                Date
+                {{ __('dictionary.table_date') }}
                 <svg v-if="sortBy.date === 'DESC'" class="table-head__column-arrow" aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -101,7 +98,7 @@
               </div>
             </th>
             <th class="table-head__column">
-              Actions
+              {{ __('dictionary.table_actions') }}
             </th>
           </tr>
         </thead>
@@ -138,20 +135,20 @@
   </div>
 
   <modal v-if="showAddDialog" @closeDialog="closeWordDialog">
-    <template #title>{{ entry && entry.id ? 'Edit entry' : 'Add new entry' }}</template>
+    <template #title>{{ entry && entry.id ? __('dictionary.edit_entry_button') : __('dictionary.add_entry_button') }}</template>
     <template #body>
       <form class="word-form">
         <div class="word-form__item">
-          <input-text :v$="v$.text" v-model="entry.text" label="Word or phrase"/>
+          <input-text :v$="v$.text" v-model="entry.text" :label="__('dictionary.add_entry_word')"/>
         </div>
         <div class="word-form__item">
-          <input-text v-model="entry.transcription" label="Transcription"/>
+          <input-text v-model="entry.transcription" :label="__('dictionary.add_entry_transcription')"/>
         </div>
         <div class="word-form__item">
-          <input-text :v$="v$.translation" v-model="entry.translation" label="Translation"/>
+          <input-text :v$="v$.translation" v-model="entry.translation" :label="__('dictionary.add_entry_translation')"/>
         </div>
         <div class="word-form__item">
-          <button-default @click.prevent="saveWord" text="Save"/>
+          <button-default @click.prevent="saveWord" :text="__('dictionary.add_entry_save')"/>
           <button-cancel @click.prevent="closeWordDialog"/>
         </div>
       </form>
@@ -173,7 +170,9 @@ import Pagination from "../components/Pagination.vue";
 import axios from "axios";
 import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import { useI18n } from 'vue-i18n';
 
+const { t: __ } = useI18n();
 const showAddDialog = ref(false)
 const loadData = ref(true);
 const pagination = ref(null);
@@ -182,11 +181,11 @@ const searchInput = ref('')
 const period = ref('')
 
 const periodOptions = ref([
-  {value: '', name: 'Selected period', selected: true},
-  {value: 'day', name: 'Last day', selected: false},
-  {value: 'week', name: 'Last week', selected: false},
-  {value: 'month', name: 'Last month', selected: false},
-  {value: 'year', name: 'Last year', selected: false}
+  {value: '', name: __('dictionary.period_not_chosen'), selected: true},
+  {value: 'day', name: __('dictionary.period_last_day'), selected: false},
+  {value: 'week', name: __('dictionary.period_last_week'), selected: false},
+  {value: 'month', name: __('dictionary.period_last_month'), selected: false},
+  {value: 'year', name: __('dictionary.period_last_year'), selected: false}
 ]);
 
 const entry = ref({

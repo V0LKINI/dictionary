@@ -2,10 +2,10 @@
   <div v-click-outside="() => toggleProfile(true)" class="profile">
     <div @click="toggleProfile()"  class="profile-info">
       <img type="button" data-dropdown-placement="bottom-start" class="profile-info__image"
-           :src="user.image != null ? user.image : defaultProfileImage" alt="User avatar">
+           :src="user.image != null ? user.image : defaultProfileImage" :alt="__('profile.avatar')">
       <div>
         <div class="profile-info__name">{{ user.name }}</div>
-        <div class="profile-info__joined">Joined in {{ user.created_at }}</div>
+        <div class="profile-info__joined">{{ __('profile.joined', {date: user.created_at }) }}</div>
       </div>
     </div>
     <!-- User dropdown -->
@@ -20,7 +20,7 @@
             <path stroke="currentColor" stroke-width="2"
                   d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
           </svg>
-          Profile
+          {{ __('profile.menu_profile') }}
         </button>
       </div>
       <div class="profile-dropdown__item">
@@ -30,7 +30,7 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="m13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"/>
           </svg>
-          Language
+          {{ __('profile.menu_language') }}
         </button>
       </div>
       <div class="profile-dropdown__item">
@@ -40,7 +40,7 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2"/>
           </svg>
-          Sign out
+          {{ __('profile.menu_sign_out') }}
         </button>
       </div>
     </div>
@@ -51,7 +51,7 @@
      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 8-4 4 4 4"/>
      </svg>
-     Back
+      {{ __('profile.menu_back') }}
     </div>
     <div @click="changeLanguage('en')" class="languages-dropdown__item">
      English
@@ -63,12 +63,12 @@
   </div>
 
   <modal v-if="showProfileDialog" @closeDialog="closeProfileDialog">
-    <template #title>Edit Profile</template>
+    <template #title>{{ __('profile.popup_title') }}</template>
     <template #body>
       <form>
         <div class="profile-form">
           <div class="profile-form__dropdown">
-            <label for="file" class="profile-form__dropdown-label">Profile image</label>
+            <label for="file" class="profile-form__dropdown-label">{{ __('profile.popup_image') }}</label>
             <template v-if="image && typeof image !== 'object'">
               <div class="profile-form__dropdown-image">
                 <img :src="image" class="profile-form__dropdown-image-img" alt="profile-image">
@@ -83,13 +83,13 @@
             </template>
             <drop-file v-model="image"/>
           </div>
-          <input-text v-model="name" label="Name"/>
-          <input-text v-model="email" label="Email"/>
-          <input-text v-model="password" label="Password" type="password" autocomplete="new-password"/>
-          <input-text v-model="passwordConfirm" label="Confirm password" type="password" autocomplete="new-password"/>
+          <input-text v-model="name" :label="__('profile.popup_name')"/>
+          <input-text v-model="email" :label="__('profile.popup_email')"/>
+          <input-text v-model="password" :label="__('profile.popup_password')" type="password" autocomplete="new-password"/>
+          <input-text v-model="passwordConfirm" :label="__('profile.popup_password_confirm')" type="password" autocomplete="new-password"/>
         </div>
         <div class="profile-form-buttons">
-          <button-default @click.prevent="saveProfile" text="Save"/>
+          <button-default @click.prevent="saveProfile" :text="__('profile.popup_save')"/>
           <button-cancel @click.prevent="closeProfileDialog"/>
         </div>
       </form>
@@ -198,16 +198,20 @@ const hideLanguages = () => {
 }
 
 const changeLanguage = (code) => {
+  if (localStorage.getItem('locale') === code) {
+    return;
+  }
+
   axios.put('/api/profile/changeLocale', {locale: code}).then((r) => {
     let response = r.data;
 
     if (response.success) {
       let user = response.data.user
 
-      locale.value = user.locale;
-
       localStorage.setItem('authUser', JSON.stringify(user));
       localStorage.setItem('locale', code)
+
+      window.location.reload();
     }
   });
 }

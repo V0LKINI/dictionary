@@ -4,7 +4,7 @@
    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 8-4 4 4 4"/>
   </svg>
   <button class="breadcrumbs__text">
-   Back
+   {{ __('breadcrumbs.back') }}
   </button>
  </router-link >
 </template>

@@ -51,9 +51,12 @@ if (localStorage.getItem('token')) {
 }
 
 //Create application
-createApp(App)
+const app = createApp(App)
     .use(createPinia())
     .use(router)
     .use(vClickOutside)
-    .use(i18n)
-    .mount("#app");
+    .use(i18n);
+
+app.config.globalProperties.__ = i18n.global.t;
+
+app.mount("#app")
