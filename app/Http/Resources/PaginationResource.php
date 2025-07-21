@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\LengthAwarePaginator;
 
+/**
+ * @mixin LengthAwarePaginator
+ */
 class PaginationResource extends JsonResource
 {
     /**
@@ -15,7 +18,6 @@ class PaginationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        /** @var $this LengthAwarePaginator */
         return [
             'total' => $this->total(),
             'links' => $this->linkCollection(),

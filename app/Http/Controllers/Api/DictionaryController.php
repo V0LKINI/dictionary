@@ -77,7 +77,7 @@ class DictionaryController extends Controller
     /**
      * Delete words
      *
-     * @param DictionaryRequest $request
+     * @param int $id
      * @return JsonResponse|true[]
      */
     public function delete(int $id)

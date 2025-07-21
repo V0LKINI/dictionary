@@ -16,7 +16,7 @@ class ProfileController extends Controller
     /**
      * Save user data
      *
-     * @param Request $request
+     * @param ProfileRequest $request
      */
     public function save(ProfileRequest $request)
     {
@@ -39,7 +39,7 @@ class ProfileController extends Controller
     /**
      * Change user's locale
      *
-     * @param Request $request
+     * @param LocaleRequest $request
      */
     public function changeLocale(LocaleRequest $request)
     {

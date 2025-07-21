@@ -18,7 +18,7 @@ class AuthController extends Controller
     /**
      * Login user
      *
-     * @param Request $request
+     * @param LoginRequest $request
      */
     public function login(LoginRequest $request)
     {
@@ -39,7 +39,7 @@ class AuthController extends Controller
     /**
      * Register user
      *
-     * @param Request $request
+     * @param RegisterRequest $request
      */
     public function register(RegisterRequest $request)
     {
@@ -60,7 +60,7 @@ class AuthController extends Controller
     /**
      * Request a recovery password email
      *
-     * @param Request $request
+     * @param RecoveryRequest $request
      */
     public function recovery(RecoveryRequest $request)
     {
@@ -92,7 +92,7 @@ class AuthController extends Controller
     /**
      * Set new password for user
      *
-     * @param RecoveryRequest $token
+     * @param RecoverySetRequest $request
      */
     public function setNewPassword(RecoverySetRequest $request)
     {

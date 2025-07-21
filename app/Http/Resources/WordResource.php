@@ -2,13 +2,14 @@
 
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
+use App\Models\Word;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Str;
 
-class
-WordResource extends JsonResource
+/**
+ * @mixin Word
+ */
+class WordResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

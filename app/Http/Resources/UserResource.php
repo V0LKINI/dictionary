@@ -2,11 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\User */
+/**
+ * @mixin User
+ */
 class UserResource extends JsonResource
 {
     /**
@@ -18,7 +21,6 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'surname' => $this->surname,
             'email' => $this->email,
             'locale' => $this->locale,
             'image' =>  $this->image ? url('/storage/' . $this->image) : null,

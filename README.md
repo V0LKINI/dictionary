@@ -23,3 +23,8 @@
 (для разработки использовать ```docker exec -it dictionary npm run dev```)
 - Сайт будет доступен по http://localhost
 PHPMyAdmin будет доступен по http://localhost:8000
+
+## Запуск статического анализатора larastan
+```
+docker exec dictionary sh -c "./vendor/bin/phpstan analyze --memory-limit=1024M --error-format=table > stan_errors.txt"
+```
