@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DictionaryRequest;
-use App\Http\Requests\TranslateRequest;
 use App\Http\Resources\PaginationResource;
 use App\Http\Resources\WordResource;
 use App\Http\Resources\WordsListResource;
@@ -54,7 +53,6 @@ class DictionaryController extends Controller
     /**
      * Save word
      *
-     * @param DictionaryRequest $request
      * @return JsonResponse|true[]
      */
     public function save(DictionaryRequest $request)
@@ -77,7 +75,6 @@ class DictionaryController extends Controller
     /**
      * Delete words
      *
-     * @param int $id
      * @return JsonResponse|true[]
      */
     public function delete(int $id)

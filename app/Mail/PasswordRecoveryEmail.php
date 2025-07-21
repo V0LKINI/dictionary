@@ -36,7 +36,6 @@ class PasswordRecoveryEmail extends Mailable
         );
     }
 
-
     /**
      * Get the message content definition.
      *

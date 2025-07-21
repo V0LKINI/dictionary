@@ -7,7 +7,6 @@ use App\Http\Requests\LocaleRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Resources\UserResource;
 use App\Services\ProfileService;
-use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -15,8 +14,6 @@ class ProfileController extends Controller
 
     /**
      * Save user data
-     *
-     * @param ProfileRequest $request
      */
     public function save(ProfileRequest $request)
     {
@@ -38,8 +35,6 @@ class ProfileController extends Controller
 
     /**
      * Change user's locale
-     *
-     * @param LocaleRequest $request
      */
     public function changeLocale(LocaleRequest $request)
     {
@@ -55,5 +50,4 @@ class ProfileController extends Controller
             return $this->error($e->getMessage(), $e->getCode());
         }
     }
-
 }

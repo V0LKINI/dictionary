@@ -51,6 +51,4 @@ class ProfileService
 
         return $user;
     }
-
-
 }

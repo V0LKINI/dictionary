@@ -61,7 +61,7 @@ class AuthService
             'created_at' => Carbon::now()
         ], ['email']);
 
-        $link = url('/recovery-confirm?token='.$token);
+        $link = url('/recovery-confirm?token=' . $token);
 
         Mail::to($email)->send(new PasswordRecoveryEmail($link));
     }

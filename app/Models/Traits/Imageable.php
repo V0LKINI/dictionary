@@ -2,17 +2,12 @@
 
 namespace App\Models\Traits;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 trait Imageable
 {
     /**
      * Set model image
-     *
-     * @param $attribute
-     * @param $folder
-     * @param $value
      */
     protected function setImage($attribute, $folder, $value)
     {
