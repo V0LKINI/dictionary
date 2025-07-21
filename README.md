@@ -2,7 +2,7 @@
 Проект задуман и реализован как электронная версия словаря для хранения и изучения иностранных слов.
 
 ## Стек технологий
-- Laravel v11.23.5 [docs](https://laravel.com/docs/11.x)
+- Laravel v12.20.0 [docs](https://laravel.com/docs/11.x)
 - PHP v8.3.11
 - MySQL v8.0.36
 - Node v18.19.0
