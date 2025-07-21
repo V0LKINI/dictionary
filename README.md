@@ -28,3 +28,10 @@ PHPMyAdmin будет доступен по http://localhost:8000
 ```
 docker exec dictionary sh -c "./vendor/bin/phpstan analyze --memory-limit=1024M --error-format=table > stan_errors.txt"
 ```
+
+## Запуск линтера pint
+```
+docker exec -it -uroot dictionary sh -c "./vendor/bin/pint --test -vvv  > pint_errors.txt"
+```
+- Флаг --test дает возможность просто вывести проблемные места без правки
+- Опция -vvv дает подробный вывод
